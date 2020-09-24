@@ -1,3 +1,5 @@
+const { todo } = require('./todo');
+
 /**
  * initialize all the routes
  * @param {*} app 
@@ -15,4 +17,6 @@ exports.routes = (app) => {
             return{ success: true }
         }
     });
+
+    todo(app);
 }
