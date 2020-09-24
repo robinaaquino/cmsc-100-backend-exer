@@ -6,13 +6,12 @@
   "scripts": {
     "test": "npx tap --reporter=spec",
     "start": "node index.js"
-    
   },
   "author": "TJ Monserrat",
   "license": "MIT",
   "dependencies": {
     "bcrypt": "^5.0.0",
-    "fastify": "^3.3.0",
+    "fastify": "^3.4.1",
     "fastify-auth": "^1.0.1",
     "fastify-cookie": "^4.0.2",
     "fastify-cors": "^4.1.0",
