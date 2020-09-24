@@ -12,13 +12,10 @@ exports.build = async(opts = { logger: true, trustProxy: true}) => {
     //access http://localhost/
     app.get('/', {
 
-
         /**     
-        *@param {*} req - this is the request parameter that is sent by the client
+        *handles the request for a given route which is get
         */
         handler: async (req) => {
-            console.log('Hello World!!!')
-
             //response in JSON
             return{ success: true }
         }
