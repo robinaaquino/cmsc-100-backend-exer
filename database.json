@@ -1,0 +1,46 @@
+{
+  "todos": [
+    {
+      "id": "c3806f05-7910-469f-a42e-c7ca3ed55ad0",
+      "text": "This is a todo",
+      "done": false,
+      "dateCreated": 1600963040786,
+      "dateUpdated": 1600963040786
+    },
+    {
+      "id": "94d31b94-5155-466b-97e2-6aadf75789dc",
+      "text": "This is a todo",
+      "done": false,
+      "dateCreated": 1600963356736,
+      "dateUpdated": 1600963356736
+    },
+    {
+      "id": "2fe8cfc7-0c15-44c0-8683-c5349c44b381",
+      "text": "This is a todo",
+      "done": false,
+      "dateCreated": 1600963950598,
+      "dateUpdated": 1600963950598
+    },
+    {
+      "id": "a042c461-61b6-4789-8252-07fa17734c93",
+      "text": "This is a todo",
+      "done": false,
+      "dateCreated": 1600964004011,
+      "dateUpdated": 1600964004012
+    },
+    {
+      "id": "ffc3e29c-b02f-4946-85f0-baf20196d21e",
+      "text": "This is a todo",
+      "done": false,
+      "dateCreated": 1600964091866,
+      "dateUpdated": 1600964091866
+    },
+    {
+      "id": "0e10487d-9c2b-4e8a-9a68-655811ce0608",
+      "text": "This is a todo",
+      "done": false,
+      "dateCreated": 1600964124217,
+      "dateUpdated": 1600964124217
+    }
+  ]
+}
