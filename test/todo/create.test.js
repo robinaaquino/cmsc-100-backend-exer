@@ -13,7 +13,7 @@ describe('For the route for creating a todo POST: (/todo)', () => {
         app = await build();
     })
 
-    it('it should return { sucess: true, data: (new todo object)} and has a status code of 200 when called using POST', async () => {
+    it('it should return { success: true, data: (new todo object)} and has a status code of 200 when called using POST', async () => {
         const response = await app.inject({
             method: 'POST',
             url: '/todo',
