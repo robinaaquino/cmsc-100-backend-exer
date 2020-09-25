@@ -24,6 +24,10 @@ describe('For the route for creating a todo POST: (/todo)', () => {
         });
 
         const payload = response.json();
+
+        console.log(payload);
+        console.log(response.statusCode);
+
         const { statusCode } = response;
         const { success, data } = payload;
         const { text, done, id } = data;
