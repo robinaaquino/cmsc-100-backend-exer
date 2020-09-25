@@ -23,7 +23,17 @@ exports.create = app => {
 
             //get text and done with default false from body, regardless if it has
             //a object value or null, which makes it return an empty object
-            const { text, done = false } = body;
+            const { text, done = false } = body || {};
+
+            if (!text) {
+                return response
+                    .code(400)
+                    .send({
+                        success: false,
+                        code: 'todo/malformed',
+                        message: 'Payload doesn\'t have text property'
+                    });
+            }
 
             const filename = join(__dirname, '../../database.json');
             const encoding = 'utf8';
