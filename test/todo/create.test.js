@@ -40,7 +40,7 @@ describe('For the route for creating a todo POST: (/todo)', () => {
         const filename = join(__dirname, '../../database.json');
         const encoding = 'utf8';
         const databaseString = readFileSync(filename, encoding );
-        const database = JSON.parse(daabaseString);
+        const database = JSON.parse(databaseString);
 
         const{ todos } = database;
         const index = todos.findIndex(todo => todo.id === id);

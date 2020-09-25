@@ -48,7 +48,7 @@ exports.create = app => {
             writeFileSync(filename, newDatabaseStringContents, encoding);
 
             return {
-                sucess: true,
+                success: true,
                 data
             }
         }
