@@ -1,6 +1,4 @@
-
 const { build } = require('../app');
-
 require('tap').mochaGlobals();
 require('should');
 
