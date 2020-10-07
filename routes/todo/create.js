@@ -23,6 +23,8 @@ exports.create = app => {
 
             //get text and done with default false from body, regardless if it has
             //a object value or null, which makes it return an empty object
+
+            //ensure that when using Postman to check this that it's set to json not text
             const { text, done = false } = body || {};
 
             if (!text) {
