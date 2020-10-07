@@ -1,4 +1,5 @@
 const { create } = require('./create');
+const { getMany } = require('./get-many'); //imports todos from the other js files in routes
 
 /**
  * initialize all the routes for todo
@@ -8,4 +9,5 @@ const { create } = require('./create');
 
 exports.todo = (app) => {
    create(app);
+   getMany(app);
 }
