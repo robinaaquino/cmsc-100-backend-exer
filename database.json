@@ -6,6 +6,13 @@
       "done": false,
       "dateCreated": 1600963040786,
       "dateUpdated": 1600963040786
+    },
+    {
+      "id": "c3806f05-7910-469f-a42e-c7ca3ed55ad1",
+      "text": "This is a todo 1",
+      "done": false,
+      "dateCreated": 1600963040786,
+      "dateUpdated": 1600963040786
     }
   ]
 }
