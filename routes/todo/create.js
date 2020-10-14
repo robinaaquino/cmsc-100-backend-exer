@@ -56,7 +56,6 @@ exports.create = app => {
             //we added null and 2 when stringifying the object so that
             //the JSON file looks visually understandable
             const newDatabaseStringContents = JSON.stringify(database, null, 2); 
-
             writeFileSync(filename, newDatabaseStringContents, encoding);
 
             return {
