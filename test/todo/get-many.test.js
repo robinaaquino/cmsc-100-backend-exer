@@ -93,6 +93,36 @@ describe('For the route for getting many todos GET: (/todo)', () => {
         }
     });
 
+    it('it should return { success: true, data: array of todos} and has a status code of 200 when called using GET and has a limit of 2 items', async () => {
+        const response = await app.inject({
+            method: 'GET',
+            url: '/todo?limit=2'
+        });
+
+        const payload = response.json();
+
+        console.log(payload);
+        console.log(response.statusCode);
+
+        const { statusCode } = response;
+        const { success, data } = payload;
+
+        success.should.equal(true);
+        statusCode.should.equal(200);
+        data.length.should.equal(2);
+
+        const todos = getTodos(filename, encoding);
+
+        for(const todo of data){ //checking if it really exists in the database 
+            const { text, done, id } = todo;
+            const index = todos.findIndex(todo => todo.id === id);
+            index.should.not.equal(-1);
+            const { text: textDatabase, done: doneDatabase } = todos[index];
+            text.should.equal(textDatabase);
+            done.should.equal(doneDatabase);
+        }
+    });
+
     it('it should return { success: true, data: array of todos} and has a status code of 200 when called using GET and has a default limit of 3 items and it should be in descending order', async () => {
         const response = await app.inject({
             method: 'GET',
