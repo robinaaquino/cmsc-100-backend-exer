@@ -10,7 +10,7 @@ mongoose.connect('mongodb://localhost:27017/test', {
  * This creates a connection to the database
  * @returns { Promise }
  */
-exports.connect = () => new Promise((resolve, rejct) => {
+exports.connect = () => new Promise((resolve, reject) => {
     const { connection } = mongoose;
     connection.on('error', reject);
     connection.once('open', resolve);
