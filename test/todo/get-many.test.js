@@ -25,8 +25,6 @@ describe('For the route for getting many todos GET: (/todo)', () => {
 
 
             const payload = response.json();
-
-            console.log(payload);
             const { data } = payload;
             const { id } = data; //we need ids
 
@@ -57,10 +55,6 @@ describe('For the route for getting many todos GET: (/todo)', () => {
         });
 
         const payload = response.json();
-
-        console.log(payload);
-        console.log(response.statusCode);
-
         const { statusCode } = response;
         const { success, data } = payload;
 
@@ -90,10 +84,6 @@ describe('For the route for getting many todos GET: (/todo)', () => {
         });
 
         const payload = response.json();
-
-        console.log(payload);
-        console.log(response.statusCode);
-
         const { statusCode } = response;
         const { success, data } = payload;
 
@@ -123,10 +113,6 @@ describe('For the route for getting many todos GET: (/todo)', () => {
         });
 
         const payload = response.json();
-
-        console.log(payload);
-        console.log(response.statusCode);
-
         const { statusCode } = response;
         const { success, data } = payload;
 
@@ -149,10 +135,6 @@ describe('For the route for getting many todos GET: (/todo)', () => {
         });
 
         const payload = response.json();
-
-        console.log(payload);
-        console.log(response.statusCode);
-
         const { statusCode } = response;
         const { success, data } = payload;
 
@@ -194,10 +176,6 @@ describe('For the route for getting many todos GET: (/todo)', () => {
         });
 
         const payload = response.json();
-
-        console.log(payload);
-        console.log(response.statusCode);
-
         const { statusCode } = response;
         const { success, data } = payload;
 
@@ -214,5 +192,37 @@ describe('For the route for getting many todos GET: (/todo)', () => {
 
         //the last data should be equal to the picked id
         data[data.length - 1].id.should.equal(id);
+    });
+
+    //not mentioned in the video but is shown briefly in the working tree when committing
+    it('it should return { success: true, data: array of todos} and has a status code of 200 when called using GET ', async () => { 
+        const id = ids[parseInt(Math.random() * ids.length)];
+
+        const { dateUpdated: endDate } = await Todo
+            .findOne({ id })
+            .exec();
+
+        const response = await app.inject({
+            method: 'GET',
+            url: `todo?endDate=${endDate}`
+        });
+
+        const payload = response.json();
+        const { statusCode } = response;
+        const { success, data } = payload;
+
+        success.should.equal(true);
+        statusCode.should.equal(200);
+        (data.length <= 3).should.equal(true);
+
+        for(let i = 0; i < data.length - 1; i++){
+            const prevTodo = data[i];
+            const nextTodo = data[i+1];
+
+            (nextTodo.dateUpdated < prevTodo.dateUpdated).should.equal(true); //remember, next first then previous for descending order
+        }
+
+        //the last data should be equal to the picked id
+        // data[data.length - 1].id.should.equal(id);
     });
 });
