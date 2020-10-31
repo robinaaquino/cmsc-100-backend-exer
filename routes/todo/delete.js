@@ -31,15 +31,10 @@ exports.deleteOne = app => { //arrow function which allows modification of globa
             
             const data = await Todo.findOneAndDelete({ id }).exec(); //returns the deleted object
 
-            if (!data){ //it's -1
+            if (!data){
                 return response
-                    .code(404)
-                    .send({
-                        success: false,
-                        code: 'todo/not found',
-                        message: 'Todo doesn\'t exist'
-                    });
-            }
+                    .notFound('todo/not-found')
+            } 
 
             return {
                 success: true

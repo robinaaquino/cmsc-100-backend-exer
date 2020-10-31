@@ -34,13 +34,8 @@ exports.get = app => { //arrow function which allows modification of global vari
 
             if (!data){
                 return response
-                    .code(404)
-                    .send({
-                        success: false,
-                        code: 'todo/not found',
-                        message: 'Todo doesn\'t exist'
-                    });
-            }
+                    .notFound('todo/not-found')
+            } 
 
             return {
                 success: true,
