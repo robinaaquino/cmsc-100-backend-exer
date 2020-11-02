@@ -11,7 +11,11 @@ exports.errorHandler = (error, request, response) => {
     const errors = {
         'todo/not-found': 'Todo cannot be found using the given ID',
         'request/malformed': 'Payload doesn\'t have the necessary properties',
-        'auth/wrong-password': 'Password is not correct'
+        'auth/wrong-password': 'Password is not correct',
+        'auth/no-authorization-header': 'No authorization header found',
+        'auth/no-user': 'No user is found using username',
+        'auth/expired': 'Token has expired',
+        'auth/unauthorized': 'You are not authorized to use this path'
     }
 
     if(error.validation && error.validation.length && error.validationContext === 'body'){
