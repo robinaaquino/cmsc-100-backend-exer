@@ -10,7 +10,8 @@ exports.errorHandler = (error, request, response) => {
     let errorMessage = error.message;
     const errors = {
         'todo/not-found': 'Todo cannot be found using the given ID',
-        'request/malformed': 'Payload doesn\'t have the necessary properties'
+        'request/malformed': 'Payload doesn\'t have the necessary properties',
+        'auth/wrong-password': 'Password is not correct'
     }
 
     if(error.validation && error.validation.length && error.validationContext === 'body'){
