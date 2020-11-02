@@ -5,6 +5,13 @@ const UniqueIDData = {
     example: '3b84349f-a82e-4a17-a711-e25afaaf69ef'
 };
 
+const JWTData = {
+    type: 'string',
+    description: "A JSON web token",
+    value: '3b84349f-a82e-4a17-a711-e25afaaf69ef',
+    example: '3b84349f-a82e-4a17-a711-e25afaaf69ef'
+}
+
 const UsernameData = {
     type: 'string',
     description: "A unique username",
@@ -172,6 +179,16 @@ const GetOneTodoResponse = {
     }
 }
 
+const LoginResponse = {
+    type: 'object',
+    description: 'Returns a JWT data',
+    required: ['success','data'],
+    properties: {
+        success: SuccessData,
+        data: JWTData
+    }
+}
+
 exports.definitions = {
     SuccessResponse,
     GetManyTodoResponse,
@@ -181,5 +198,6 @@ exports.definitions = {
     PostTodoRequest,
     PutTodoRequest,
     PostUserRequest,
-    GetOneUserResponse
-}
+    GetOneUserResponse,
+    LoginResponse
+} //13:30 //openssl command incomplete at 6:24
