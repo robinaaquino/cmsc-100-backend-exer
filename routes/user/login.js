@@ -1,7 +1,7 @@
 const bcrypt = require('bcrypt'); //encrypts password
 const { User } = require('../../db');
 const { definitions } = require('../../definitions');
-const { SuccessResponse, PostUserRequest } = definitions;
+const { LoginResponse, PostUserRequest } = definitions;
 /**
  * this is the route for creating a user
  * @param {*} app 
@@ -15,7 +15,7 @@ exports.login = app => {
             summary: 'Logs in a user',
             body: PostUserRequest,
             response: {
-                200: SuccessResponse //using response we can filter out what we want to show on our response
+                200: LoginResponse //using response we can filter out what we want to show on our response
             }
         },
 
@@ -33,16 +33,16 @@ exports.login = app => {
 
             if(!(await bcrypt.compare(password, user.password))) {
                 return response
-                    .code(401)
-                    .send({
-                        success: false,
-                        code: 'auth/unauthorized',
-                        message: 'Wrong password'
-                    });
+                    .unauthorized('auth/wrong-password');
             }
 
+            const data = app.jwt.sign({
+                username
+            }); //enveloping payload with username
+
             return {
-                success: true
+                success: true,
+                data
             }
         }
     
