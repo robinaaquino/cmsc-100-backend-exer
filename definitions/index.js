@@ -76,6 +76,7 @@ const TodoFullData = {
         id: UniqueIDData,
         text: TextData,
         done: DoneData,
+        username: UsernameData,
         dateUpdated: DateData,
         dateCreated: DateData
     }

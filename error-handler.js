@@ -15,7 +15,8 @@ exports.errorHandler = (error, request, response) => {
         'auth/no-authorization-header': 'No authorization header found',
         'auth/no-user': 'No user is found using username',
         'auth/expired': 'Token has expired',
-        'auth/unauthorized': 'You are not authorized to use this path'
+        'auth/unauthorized': 'You are not authorized to use this path',
+        'auth/discarded': 'The token has been already logged out'
     }
 
     if(error.validation && error.validation.length && error.validationContext === 'body'){

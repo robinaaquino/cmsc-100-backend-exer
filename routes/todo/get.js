@@ -17,8 +17,16 @@ exports.get = app => { //arrow function which allows modification of global vari
             params: GetOneTodoParams,
             response: {
                 200: GetOneTodoResponse
-            }
+            },
+            security: [
+                {
+                    bearer: []
+                }
+            ]
         },
+        preHandler: app.auth([
+            app.verifyJWT
+        ]),
 
         /**
          * This gets one todo from the database given a unique ID
@@ -27,10 +35,11 @@ exports.get = app => { //arrow function which allows modification of global vari
          * @param {import('fastify').FastifyReply<Response>} response
          */
         handler: async(request, response) => { //since we aren't using responses?? might need to consult what this means, request allows pagination, get method will not read the payload so we use query params
-            const { params } = request; //use url to get info
+            const { params, user } = request; //use url to get info
+            const { username } = user;
             const { id } = params;
         
-            const data = await Todo.findOne({ id }).exec();
+            const data = await Todo.findOne({ id, username }).exec();
 
             if (!data){
                 return response

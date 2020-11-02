@@ -1,5 +1,7 @@
 const { create } = require('./create');
 const { login } = require('./login');
+const { logout } = require('./logout');
+const { auth } = require('./auth');
 
 /**
  * initialize all the routes for todo
@@ -10,4 +12,6 @@ const { login } = require('./login');
 exports.user = (app) => {
    create(app);
    login(app);
+   auth(app);
+   logout(app);
 }

@@ -21,8 +21,16 @@ exports.getMany = app => { //arrow function which allows modification of global 
             query: GetManyTodoQuery,
             response: {
                 200: GetManyTodoResponse
-            }
+            },
+            security: [
+                {
+                    bearer: []
+                }
+            ]
         },
+        preHandler: app.auth([
+            app.verifyJWT
+        ]),
         
         /**
          * handles the request for a given route
@@ -30,10 +38,13 @@ exports.getMany = app => { //arrow function which allows modification of global 
          * @param {import('fastify').FastifyRequest} request
          */
         handler: async(request) => { //since we aren't using responses?? might need to consult what this means, request allows pagination, get method will not read the payload so we use query params
-            const { query } = request; //use url to get info
+            const { query, user } = request; //use url to get info
+            const { username } = user;
             const { limit = 3, startDate, endDate } = query; //whenever we get a query, it's returned as a string so we need to transform it into a number
 
-            const options = {};
+            const options = {
+                username
+            };
 
             if (startDate){
                 options.dateUpdated = {};

@@ -17,8 +17,16 @@ exports.update = app => { //arrow function which allows modification of global v
             params: GetOneTodoParams,
             response: {
                 200: GetOneTodoResponse
-            }
+            },
+            security: [
+                {
+                    bearer: []
+                }
+            ]
         },
+        preHandler: app.auth([
+            app.verifyJWT
+        ]),
 
         /**
          * This updates one todo from the database given a unique ID and a payload
@@ -27,7 +35,8 @@ exports.update = app => { //arrow function which allows modification of global v
          * @param {import('fastify').FastifyReply<Response>} response
          */
         handler: async (request, response) => { //since we aren't using responses?? might need to consult what this means, request allows pagination, get method will not read the payload so we use query params
-            const { params, body } = request; //use url to get info
+            const { params, body, user } = request; //use url to get info
+            const { username } = user;
             const { id } = params;
             //get text and done from body
             //ensure that when using Postman to check this that it's set to json not text
@@ -39,7 +48,7 @@ exports.update = app => { //arrow function which allows modification of global v
                     .badRequest('request/malformed')
             }
 
-            const oldData = await Todo.findOne({ id }).exec();
+            const oldData = await Todo.findOne({ id, username }).exec();
 
             if (!oldData){ //it's -1
                 return response
