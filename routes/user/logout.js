@@ -1,3 +1,10 @@
+/**
+ * Logout Module
+ * - Should return unauthorized if no token or wrong token is given
+- Should add token to forbidden list to disallow the reuse of the token
+- Should remove the token in the session cookie
+ */
+
 const { DiscardedToken } = require('../../db');
 const { definitions } = require('../../definitions');
 const { SuccessResponse } = definitions;

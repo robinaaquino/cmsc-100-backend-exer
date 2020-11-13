@@ -1,3 +1,10 @@
+/**
+ * Prehandler Auth Module
+ * - Should return unauthorized 401 if no token or a wrong token is given
+- Should process token from authorization header
+- Should process token from the cookie session
+ */
+
 const { definitions } = require('../../definitions');
 const { SuccessResponse } = definitions;
 

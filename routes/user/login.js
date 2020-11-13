@@ -1,3 +1,12 @@
+/**
+ * Login Module
+ * - Password and username is required and will return bad request 400 if not supplied
+- if username doesn't exist, return not found 404
+- if password is wrong, return unauthorized 401
+- Should authenticate and return JWT only with payload on userId in the token
+- Body should also return userId
+- Should add a token expiration of 1hr
+ */
 const bcrypt = require('bcrypt'); //encrypts password
 const { User } = require('../../db');
 const { definitions } = require('../../definitions');
