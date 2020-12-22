@@ -46,16 +46,16 @@ exports.create = app => {
         handler: async (request, response) => {
             const { body, user } = request;
 
-            //get text and done with default false from body, regardless if it has
+            //get text and isDone with default false from body, regardless if it has
             //a object value or null, which makes it return an empty object
 
             //ensure that when using Postman to check this that it's set to json not text
-            const { text, done = false } = body;
+            const { text, isDone = false } = body;
             const { username } = user;
 
             const data = new Todo ({
                 text,
-                done,
+                isDone,
                 username
             });
 

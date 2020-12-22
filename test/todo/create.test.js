@@ -56,29 +56,29 @@ describe('For the route for creating a todo POST: (/todo)', () => {
             },
             payload: {
                 text: 'This is a todo',
-                done: false
+                isDone: false
             }
         });
 
         const payload = response.json();
         const { statusCode } = response;
         const { success, data } = payload;
-        const { text, done, id } = data;
+        const { text, isDone, id } = data;
 
         success.should.equal(true);
         statusCode.should.equal(200);
         text.should.equal('This is a todo');
-        done.should.equal(false);
+        isDone.should.equal(false);
 
         const { 
             text: textDatabase, 
-            done: doneDatabase 
+            isDone: isDoneDatabase 
         } = await Todo
             .findOne({ id })
             .exec();
 
         text.should.equal(textDatabase);
-        done.should.equal(doneDatabase);
+        isDone.should.equal(isDoneDatabase);
 
         //add the id in the ids array for cleaning
         ids.push(id);
@@ -86,7 +86,7 @@ describe('For the route for creating a todo POST: (/todo)', () => {
     });
 
     //another happy path but a different way of sending data
-    it ('should return {success: true, data: (new todo object)} and has a status code of 200 when called using POST even if we don\'t provide the done property. Default of done should still be false', async () => {
+    it ('should return {success: true, data: (new todo object)} and has a status code of 200 when called using POST even if we don\'t provide the isDne property. Default of isDone should still be false', async () => {
         const response = await app.inject({
             method: 'POST',
             url: '/todo',
@@ -101,22 +101,22 @@ describe('For the route for creating a todo POST: (/todo)', () => {
         const payload = response.json();
         const { statusCode } = response;
         const { success, data } = payload;
-        const { text, done, id } = data;
+        const { text, isDone, id } = data;
 
         success.should.equal(true);
         statusCode.should.equal(200);
         text.should.equal('This is a todo 2');
-        done.should.equal(false);
+        isDone.should.equal(false);
 
         const { 
             text: textDatabase, 
-            done: doneDatabase 
+            isDone: isDoneDatabase 
         } = await Todo
             .findOne({ id })
             .exec();
 
         text.should.equal(textDatabase);
-        done.should.equal(doneDatabase);
+        isDone.should.equal(isDoneDatabase);
 
         //add the id in the ids array for cleaning
         ids.push(id);
@@ -131,7 +131,7 @@ describe('For the route for creating a todo POST: (/todo)', () => {
                 authorization
             },
             payload: {
-                done: true
+                isDone: true
             }
         });
 
@@ -143,43 +143,6 @@ describe('For the route for creating a todo POST: (/todo)', () => {
         success.should.equal(false);
         should.exist(message);
     })
-
-    // //another happy path but a different way of sending data
-    // it ('should return {success: true, data: (new todo object)} and has a status code of 200 when called using POST even if we don\'t provide the done property. Default of done should still be false', async () => {
-    //     const response = await app.inject({
-    //         method: 'POST',
-    //         url: '/todo',
-    //         payload: {
-    //             text: 'This is a todo 2'
-    //         }
-    //     });
-        
-    //     const payload = response.json();
-
-    //     console.log(payload);
-    //     console.log(response.statusCode);
-
-    //     const { statusCode } = response;
-    //     const { success, data } = payload;
-    //     const { text, done, id } = data;
-
-    //     success.should.equal(true);
-    //     statusCode.should.equal(200);
-    //     text.should.equal('This is a todo 2');
-    //     done.should.equal(false);
-
-    //     //32:56 database, possible solution
-    //     const todos = getTodos(filename, encoding);
-
-    //     const index = todos.findIndex(todo => todo.id === id);
-    //     index.should.not.equal(-1);
-    //     const { text: textDatabase, done: doneDatabase } = todos[index];
-    //     text.should.equal(textDatabase);
-    //     done.should.equal(doneDatabase);
-
-    //     //add the id in the ids array for cleaning
-    //     ids.push(id);
-    // });
 
     //another non-happy path
     it ('should return {success: false, message: error message)} and has a status code of 400 when called using POST and there is no payload', async () => {

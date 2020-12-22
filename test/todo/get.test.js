@@ -44,7 +44,7 @@ describe('For the route for getting one todo GET: (/todo/:id)', () => {
                 },
                 payload: {
                     text: `Todo ${i}`, //usage of backticks for addresses
-                    done: false
+                    isDone: false
                 }
             });
 
@@ -93,7 +93,7 @@ describe('For the route for getting one todo GET: (/todo/:id)', () => {
 
         const { statusCode } = response;
         const { success, data } = payload;
-        const { text,id,done } = data;
+        const { text,id,isDone } = data;
 
         success.should.equal(true);
         statusCode.should.equal(200);
@@ -103,7 +103,7 @@ describe('For the route for getting one todo GET: (/todo/:id)', () => {
             .exec();
 
         text.should.equal(todo.text);
-        done.should.equal(todo.done);
+        isDone.should.equal(todo.isDone);
         id.should.equal(todo.id);
     });
 

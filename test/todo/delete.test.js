@@ -44,7 +44,7 @@ describe('For the route for deleting one todo DELETE: (/todo/:id)', () => {
                 },
                 payload: {
                     text: `Todo ${i}`, //usage of backticks for addresses
-                    done: false
+                    isDone: false
                 }
             });
 

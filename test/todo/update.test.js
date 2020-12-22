@@ -44,7 +44,7 @@ describe('For the route for updating one todo PUT: (/todo/:id)', () => {
                 },
                 payload: {
                     text: `Todo ${i}`, //usage of backticks for addresses
-                    done: false
+                    isDone: false
                 }
             });
 
@@ -86,7 +86,7 @@ describe('For the route for updating one todo PUT: (/todo/:id)', () => {
             },
             payload: {
                 text: 'New Todo',
-                done: true
+                isDone: true
             }
         });
 
@@ -97,7 +97,7 @@ describe('For the route for updating one todo PUT: (/todo/:id)', () => {
 
         const { statusCode } = response;
         const { success, data } = payload;
-        const { text,id,done } = data;
+        const { text,id,isDone } = data;
 
         success.should.equal(true);
         statusCode.should.equal(200);
@@ -107,7 +107,7 @@ describe('For the route for updating one todo PUT: (/todo/:id)', () => {
             .exec();
 
         text.should.equal(todo.text);
-        done.should.equal(todo.done);
+        isDone.should.equal(todo.isDone);
         id.should.equal(todo.id);
     });
 
@@ -130,7 +130,7 @@ describe('For the route for updating one todo PUT: (/todo/:id)', () => {
 
         const { statusCode } = response;
         const { success, data } = payload;
-        const { text,id,done } = data;
+        const { text,id,isDone } = data;
 
         success.should.equal(true);
         statusCode.should.equal(200);
@@ -140,10 +140,10 @@ describe('For the route for updating one todo PUT: (/todo/:id)', () => {
             .exec();
 
         text.should.equal('New Todo 1');
-        done.should.equal(false);
+        isDone.should.equal(false);
 
         text.should.equal(todo.text);
-        done.should.equal(todo.done);
+        isDone.should.equal(todo.isDone);
         id.should.equal(todo.id);
     });
 
@@ -155,7 +155,7 @@ describe('For the route for updating one todo PUT: (/todo/:id)', () => {
                 authorization
             },
             payload: {
-                done: true
+                isDone: true
             }
         });
 
@@ -166,7 +166,7 @@ describe('For the route for updating one todo PUT: (/todo/:id)', () => {
 
         const { statusCode } = response;
         const { success, data } = payload;
-        const { text,id,done } = data;
+        const { text,id,isDone } = data;
 
         success.should.equal(true);
         statusCode.should.equal(200);
@@ -175,10 +175,10 @@ describe('For the route for updating one todo PUT: (/todo/:id)', () => {
             .findOne({ id })
             .exec();
 
-        done.should.equal(true);
+        isDone.should.equal(true);
 
         text.should.equal(todo.text);
-        done.should.equal(todo.done);
+        isDone.should.equal(todo.isDone);
         id.should.equal(todo.id);
     });
 
@@ -191,7 +191,7 @@ describe('For the route for updating one todo PUT: (/todo/:id)', () => {
             },
             payload: {
                 text: 'New Todo',
-                done: true
+                isDone: true
             }
         });
 
@@ -234,7 +234,7 @@ describe('For the route for updating one todo PUT: (/todo/:id)', () => {
         should.exists(message);
     });
 
-    it('it should return { success: false, message: error message} and has a status code of 400 when called using PUT and we put a payload without text or done' , async () => {
+    it('it should return { success: false, message: error message} and has a status code of 400 when called using PUT and we put a payload without text or isDone' , async () => {
         const response = await app.inject({
             method: 'PUT',
             url: `/todo/${ids[3]}`,

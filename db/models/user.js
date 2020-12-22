@@ -13,6 +13,21 @@ module.exports=(mongoose) => {
             index: true,
             unique: true
         },
+        firstName: {
+            type: String,
+            required: true,
+            index: true
+        },
+        lastName: {
+            type: String,
+            required: true,
+            index: true
+        },
+        isAdmin: {
+            type: Boolean,
+            required: true,
+            default: false
+        }
         password: {
             type: String,
             required: true

@@ -44,7 +44,7 @@ describe('For the route for getting many todos GET: (/todo)', () => {
                 },
                 payload: {
                     text: `Todo ${i}`, //usage of backticks for addresses
-                    done: false
+                    isDone: false
                 }
             });
 
@@ -93,17 +93,17 @@ describe('For the route for getting many todos GET: (/todo)', () => {
         data.length.should.equal(3);
 
         for(const todo of data){ //checking if it really exists in the database 
-            const { text, done, id } = todo;
+            const { text, isDone, id } = todo;
 
             const { 
                 text: textDatabase, 
-                done: doneDatabase 
+                isDone: isDoneDatabase 
             } = await Todo
                 .findOne({ id })
                 .exec();
 
             text.should.equal(textDatabase);
-            done.should.equal(doneDatabase);
+            isDone.should.equal(isDoneDatabase);
         }
     });
 
@@ -125,17 +125,17 @@ describe('For the route for getting many todos GET: (/todo)', () => {
         data.length.should.equal(2);
 
         for(const todo of data){ //checking if it really exists in the database 
-            const { text, done, id } = todo;
+            const { text, isDone, id } = todo;
 
             const { 
                 text: textDatabase, 
-                done: doneDatabase 
+                isDone: isDoneDatabase 
             } = await Todo
                 .findOne({ id })
                 .exec();
 
             text.should.equal(textDatabase);
-            done.should.equal(doneDatabase);
+            isDone.should.equal(isDoneDatabase);
         }
     });
 

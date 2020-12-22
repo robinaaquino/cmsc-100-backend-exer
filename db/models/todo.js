@@ -25,7 +25,7 @@ module.exports=(mongoose) => {
             type: String,
             required: true
         },
-        done: {
+        isDone: {
             type: Boolean,
             required: true,
             default: false

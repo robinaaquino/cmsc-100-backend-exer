@@ -40,12 +40,15 @@ exports.create = app => {
          */
         handler: async (request, response) => {
             const { body } = request;
-            const { username, password } = body;
+            const { username, password, firstName, lastName, isAdmin = false } = body;
 
             const hash = await bcrypt.hash(password, saltRounds);
 
             const data = new User ({
                 username,
+                firstName,
+                lastName,
+                isAdmin,
                 password: hash
             });
 

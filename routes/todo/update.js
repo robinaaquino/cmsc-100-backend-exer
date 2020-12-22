@@ -50,12 +50,12 @@ exports.update = app => { //arrow function which allows modification of global v
             const { params, body, user } = request; //use url to get info
             const { username } = user;
             const { id } = params;
-            //get text and done from body
+            //get text and isDone from body
             //ensure that when using Postman to check this that it's set to json not text
-            const { text, done } = body;
+            const { text, isDone } = body;
         
-            //expect that we should be getting at least a test or a done property
-            if (!text && (done === null || done === undefined)){ 
+            //expect that we should be getting at least a text or a isDone property
+            if (!text && (isDone === null || isDone === undefined)){ 
                 return response
                     .badRequest('request/malformed')
             }
@@ -73,8 +73,8 @@ exports.update = app => { //arrow function which allows modification of global v
                 update.text = text;
             }
 
-            if(done !== undefined && done !== null){
-                update.done = done;
+            if(isDone !== undefined && isDone !== null){
+                update.isDone = isDone;
             }
 
             update.dateUpdated = new Date().getTime();

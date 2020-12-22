@@ -10,7 +10,7 @@ const { definitions } = require('../../definitions');
 const { GetOneTodoParams, GetOneTodoResponse } = definitions
 
 /**
- * Gets one todod
+ * Gets one todo
  * 
  * @param {*} app 
  */

@@ -19,6 +19,27 @@ const UsernameData = {
     example: 'rrmaquino'
 };
 
+const FirstNameData = {
+    type: 'string',
+    description: "A string first name",
+    value: 'Robina',
+    example: 'Robina'
+};
+
+const LastNameData = {
+    type: 'string',
+    description: "A string last name",
+    value: 'Aquino',
+    example: 'Aquino'
+}
+
+const isAdminData = {
+    type: 'boolean',
+    description: "If a user is tagged as isAdmin",
+    value: 'false',
+    example: 'false'
+}
+
 const PasswordData = {
     type: 'string',
     description: "Password string",
@@ -33,9 +54,9 @@ const TextData = {
     example: 'Hello world'
 };
 
-const DoneData = {
+const isDoneData = {
     type: 'boolean',
-    description: 'If a todo object is tagged as done',
+    description: 'If a todo object is tagged as isDone',
     value: 'true',
     example: 'true'
 };
@@ -75,7 +96,7 @@ const TodoFullData = {
     properties: {
         id: UniqueIDData,
         text: TextData,
-        done: DoneData,
+        isDone: isDoneData,
         username: UsernameData,
         dateUpdated: DateData,
         dateCreated: DateData
@@ -106,14 +127,31 @@ const GetOneTodoParams = {
     }
 }
 
+const GetOneUserParams = { //for getting one user, implementing, get one user
+    type: 'object',
+    description: 'Parameters for getting a user',
+    properties: {
+        userId: UsernameData
+    }
+}
+
 const UserFullData = {
     type: 'object',
     description: 'User data for response without the password',
     properties: {
         username: UsernameData,
+        firstName: FirstNameData,
+        lastName: LastNameData,
+        isAdmin: isAdminData,
         dateUpdated: DateData,
         dateCreated: DateData
     }
+}
+
+const UserListData = { //for getting many users, not implemented
+    type: 'array',
+    description: 'A list of users',
+    items: UserFullData
 }
 
 const GetOneUserResponse = {
@@ -157,7 +195,7 @@ const PostTodoRequest = {
     ],
     properties: {
         text: TextData,
-        done: DoneData
+        isDone: isDoneData
     }
 }
 
@@ -166,7 +204,7 @@ const PutTodoRequest = {
     description: 'Todo object data for update',
     properties: {
         text: TextData,
-        done: DoneData
+        isDone: isDoneData
     }
 }
 
@@ -177,6 +215,16 @@ const GetOneTodoResponse = {
     properties: {
         success: SuccessData,
         data: TodoFullData
+    }
+}
+
+const GetOneUserReponse = {
+    type: 'object',
+    description: 'Returns a user',
+    required: ['success', 'data'],
+    properties: {
+        success: SuccessData,
+        data: UserFullData
     }
 }
 
@@ -200,5 +248,6 @@ exports.definitions = {
     PutTodoRequest,
     PostUserRequest,
     GetOneUserResponse,
-    LoginResponse
+    LoginResponse,
+    GetOneUserParams
 } //13:30 //openssl command incomplete at 6:24
