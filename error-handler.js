@@ -10,7 +10,7 @@ exports.errorHandler = (error, request, response) => {
     let errorMessage = error.message;
     const errors = {
         'todo/not-found': 'Todo cannot be found using the given ID',
-        'user/not-found': 'User cannot be found using the givern username',
+        'user/not-found': 'User cannot be found using the given username',
         'request/malformed': 'Payload doesn\'t have the necessary properties',
         'auth/wrong-password': 'Password is not correct',
         'auth/no-authorization-header': 'No authorization header found',
