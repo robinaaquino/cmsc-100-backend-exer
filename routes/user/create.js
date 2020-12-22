@@ -5,7 +5,7 @@
 - dateUpdated and dateCreated are of type number in UNIX Epoch type and created automatically in the model's schema **finished
 - isAdmin property is default false **finished
 - should encrypt the password before saving in the database **finished
-- should return a 403 (forbidden) if a similar username already exists
+- should return a 403 (forbidden) if a similar username already exists **finished
 - should return a 400 (bad request) if password is less than 12 characters and has numbers and special characters
 - should return only success true when an account has been created
  */
@@ -45,6 +45,7 @@ exports.create = app => {
             const hash = await bcrypt.hash(password, saltRounds);
 
             const user = await User.findOne({ username }).exec();
+        
 
             if(user){ //handling error if there's a user with that username
                 return response
