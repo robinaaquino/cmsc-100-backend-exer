@@ -1,11 +1,11 @@
 /**
  * Task Module (POST create one task)
  * - can be done by a logged in user **finished
-- needs to take in text (required) and will return bad request (400) if no text is sent
-- can also take isDone property in the payload
-- dateUpdated and dateCreated are of type number in UNIX Epoch type and created automatically in the model's schema
-- username is saved in the database based on the current username that is got from the token
-- should return only success true when an account has been created
+- needs to take in text (required) and will return bad request (400) if no text is sent **finished
+- can also take isDone property in the payload **finished
+- dateUpdated and dateCreated are of type number in UNIX Epoch type and created automatically in the model's schema **finished
+- username is saved in the database based on the current username that is got from the token **finished
+- should return only success true when an account has been created **finished
  */
 
 const { Todo } = require('../../db');
@@ -62,8 +62,7 @@ exports.create = app => {
             await data.save();
 
             return {
-                success: true,
-                data
+                success: true
             }
         }
     
