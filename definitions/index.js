@@ -189,6 +189,19 @@ const PostUserRequest = {
     }   
 }
 
+const PostUserRequestLogin = {
+    type: 'object',
+    description: 'User object data for login',
+    required: [
+        'username',
+        'password'
+    ],
+    properties: {
+        username: UsernameData,
+        password: PasswordData
+    }   
+}
+
 const PostTodoRequest = {
     type: 'object',
     description: 'Todo object data for creation',
@@ -251,5 +264,6 @@ exports.definitions = {
     PostUserRequest,
     GetOneUserResponse,
     LoginResponse,
-    GetOneUserParams
+    GetOneUserParams,
+    PostUserRequestLogin
 } //13:30 //openssl command incomplete at 6:24
