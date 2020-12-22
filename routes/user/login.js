@@ -10,7 +10,7 @@
 const bcrypt = require('bcrypt'); //encrypts password
 const { User } = require('../../db');
 const { definitions } = require('../../definitions');
-const { LoginResponse, PostUserRequest } = definitions;
+const { LoginResponse, PostUserRequestLogin } = definitions;
 /**
  * this is the route for creating a user
  * @param {*} app 
@@ -22,7 +22,7 @@ exports.login = app => {
             description: 'Logs in a user',
             tags: ['User'],
             summary: 'Logs in a user',
-            body: PostUserRequest,
+            body: PostUserRequestLogin,
             response: {
                 200: LoginResponse //using response we can filter out what we want to show on our response
             }
