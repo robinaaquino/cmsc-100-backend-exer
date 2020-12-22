@@ -43,7 +43,7 @@ exports.login = app => {
             if(!user){
                 return response
                     .notFound('user/not-found')
-            }
+            } //BUG FIX doesn't work if there's no username in body
 
             if(!(await bcrypt.compare(password, user.password))) {
                 return response
