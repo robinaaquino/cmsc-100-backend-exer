@@ -1,6 +1,6 @@
 /**
  * Task Module (POST create one task)
- * - can be done by a logged in user
+ * - can be done by a logged in user **finished
 - needs to take in text (required) and will return bad request (400) if no text is sent
 - can also take isDone property in the payload
 - dateUpdated and dateCreated are of type number in UNIX Epoch type and created automatically in the model's schema
