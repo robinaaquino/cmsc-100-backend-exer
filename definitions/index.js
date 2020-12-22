@@ -183,7 +183,9 @@ const PostUserRequest = {
     ],
     properties: {
         username: UsernameData,
-        password: PasswordData
+        password: PasswordData,
+        firstName: FirstNameData,
+        lastName: LastNameData
     }   
 }
 
