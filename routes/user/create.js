@@ -1,8 +1,8 @@
 /**
  * User module (POST create one user)
- * - should create a user using username, password, first name and last name
-- username, password, first name, and last name should be strings and are required in the database with username to be unique and index.
-- dateUpdated and dateCreated are of type number in UNIX Epoch type and created automatically in the model's schema
+ * - should create a user using username, password, first name and last name **finished
+- username, password, first name, and last name should be strings and are required in the database with username to be unique and index. **finished
+- dateUpdated and dateCreated are of type number in UNIX Epoch type and created automatically in the model's schema 
 - isAdmin property is default false
 - should encrypt the password before saving in the database
 - should return a 403 (forbidden) if a similar username already exists
