@@ -59,7 +59,7 @@ exports.build = async(opts = { logger: false, trustProxy: false}) => {
             secure: false, //http is false https is true
             httpOnly: true
         },
-        maxAge: 60 * 60
+        maxAge: 60 * 60 * 1000 //one hour
     });
 
     await app
