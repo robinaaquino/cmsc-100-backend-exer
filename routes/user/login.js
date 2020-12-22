@@ -39,6 +39,11 @@ exports.login = app => {
             const { username, password } = body;
 
             const user = await User.findOne({ username }).exec();
+            
+            if(!user){
+                return response
+                    .notFound('user/not-found')
+            }
 
             if(!(await bcrypt.compare(password, user.password))) {
                 return response
