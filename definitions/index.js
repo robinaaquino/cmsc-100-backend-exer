@@ -233,6 +233,15 @@ const GetOneTodoResponse = {
     }
 }
 
+const GetOneTodoResponseCreate = {
+    type: 'object',
+    description: 'Returns a todo',
+    required: ['success'],
+    properties: {
+        success: SuccessData
+    }
+}
+
 const GetOneUserReponse = {
     type: 'object',
     description: 'Returns a user',
@@ -265,5 +274,6 @@ exports.definitions = {
     GetOneUserResponse,
     LoginResponse,
     GetOneUserParams,
-    PostUserRequestLogin
+    PostUserRequestLogin,
+    GetOneTodoResponseCreate
 } //13:30 //openssl command incomplete at 6:24

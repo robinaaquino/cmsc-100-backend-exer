@@ -10,7 +10,7 @@
 
 const { Todo } = require('../../db');
 const { definitions } = require('../../definitions');
-const { GetOneTodoResponse, PostTodoRequest } = definitions
+const { GetOneTodoResponseCreate, PostTodoRequest } = definitions
 
 /**
  * this is the route for creating todos
@@ -25,7 +25,7 @@ exports.create = app => {
             summary: 'Create one todo',
             body: PostTodoRequest,
             response: {
-                200: GetOneTodoResponse
+                200: GetOneTodoResponseCreate
             },
             security: [
                 {
@@ -63,6 +63,7 @@ exports.create = app => {
 
             return {
                 success: true
+                // data
             }
         }
     
