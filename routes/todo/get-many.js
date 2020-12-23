@@ -52,11 +52,19 @@ exports.getMany = app => { //arrow function which allows modification of global 
         handler: async(request) => { //since we aren't using responses?? might need to consult what this means, request allows pagination, get method will not read the payload so we use query params
             const { query, user } = request; //use url to get info
             const { username } = user;
-            const { limit = 3, startDate, endDate } = query; //whenever we get a query, it's returned as a string so we need to transform it into a number
+            const { startDate, endDate } = query; //whenever we get a query, it's returned as a string so we need to transform it into a number
+            var { limit = 10 } = query;
 
-            const options = {
-                username
-            };
+            if(limit > 50){
+                limit = 50;
+            }
+            
+            console.log(user.isAdmin);
+
+            const options = {};
+            if(user.isAdmin != true){
+                options = { username };
+            }
 
             if (startDate){
                 options.dateUpdated = {};
@@ -74,7 +82,7 @@ exports.getMany = app => { //arrow function which allows modification of global 
                 .find(options)
                 .limit(parseInt(limit))
                 .sort({
-                    // this forces to start the query on startDAte if and when
+                    // this forces to start the query on startDate if and when
                     //startDate only exists
                     dateUpdated: startDate && !endDate ? 1 : -1
                 })
