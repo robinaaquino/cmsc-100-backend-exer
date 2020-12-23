@@ -118,7 +118,8 @@ const GetManyTodoQuery = {
         endDateCreated: DateData,
         startDateUpdated: DateData,
         endDateUpdated: DateData,
-        isDone: isDoneData
+        isDone: isDoneData,
+        username: UsernameData
     }
 }
 
