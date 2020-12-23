@@ -78,8 +78,8 @@ const SuccessData = {
 const LimitData = {
     type: 'number',
     description: 'Limit of how many items we should query',
-    value: 4,
-    example: 4
+    value: 10,
+    example: 10
 };
 
 const SuccessResponse = {
