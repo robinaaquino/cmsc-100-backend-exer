@@ -1,6 +1,6 @@
 /**
  * Task Module (DELETE delete one task)
- * can only be done by the owner of the task
+ * can only be done by the owner of the task **finished
  * if taskId in parameter is not found in database, return bad request(404) **finished
  */
 
@@ -40,10 +40,16 @@ exports.deleteOne = app => { //arrow function which allows modification of globa
          * @param {import('fastify').FastifyReply<Response>} response
          */
         handler: async (request, response) => { //since we aren't using responses?? might need to consult what this means, request allows pagination, get method will not read the payload so we use query params
-            const { params } = request; //use url to get info
+            const { params, user } = request; //use url to get info
             const { id } = params;
-            
+            const { username } = user;
+
             const data = await Todo.findOneAndDelete({ id }).exec(); //returns the deleted object
+
+            if(data.username != user.username){
+                return response
+                    .unauthorized('todo/unauthorized')
+            }
 
             if (!data){
                 return response
