@@ -114,8 +114,11 @@ const GetManyTodoQuery = {
     description: 'Query parameters for getting many todos',
     properties: {
         limit: LimitData,
-        startDate: DateData,
-        endDate: DateData
+        startDateCreated: DateData,
+        endDateCreated: DateData,
+        startDateUpdated: DateData,
+        endDateUpdated: DateData,
+        isDone: isDoneData
     }
 }
 

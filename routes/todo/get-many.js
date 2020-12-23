@@ -3,11 +3,11 @@
  * - can be done by owner of the tasks or admin type only
 - when owner gets, should only return their own tasks
 - when admin types, should return all tasks or when there's a filter of username
-- both owner and admin can further filter their list by isDone property
-- can have a limit with not more than 50. Default is 10.
+- both owner and admin can further filter their list by isDone property **finished
+- can have a limit with not more than 50. Default is 10. **finished
 - each object in the array should have: username, text, isDone , dateUpdated, dateCreated
-- it should sort the array in terms of dateCreated or dateUpdated in a descending order only
-- it should do pagination in terms of startDateCreated, endDateCreated, startDateUpdated, endDateUpdated (all can be used in one query)
+- it should sort the array in terms of dateCreated or dateUpdated in a descending order only **finished
+- it should do pagination in terms of startDateCreated, endDateCreated, startDateUpdated, endDateUpdated (all can be used in one query) **finished
  */
 
 const { Todo } = require('../../db');
@@ -52,28 +52,41 @@ exports.getMany = app => { //arrow function which allows modification of global 
         handler: async(request) => { //since we aren't using responses?? might need to consult what this means, request allows pagination, get method will not read the payload so we use query params
             const { query, user } = request; //use url to get info
             const { username } = user;
-            const { startDate, endDate } = query; //whenever we get a query, it's returned as a string so we need to transform it into a number
+            const { isDone, startDateCreated, endDateCreated, startDateUpdated, endDateUpdated } = query; //whenever we get a query, it's returned as a string so we need to transform it into a number
             var { limit = 10 } = query;
 
             if(limit > 50){
                 limit = 50;
             }
-            
-            console.log(user.isAdmin);
 
-            const options = {};
+            var options = {};
             if(user.isAdmin != true){
                 options = { username };
             }
 
-            if (startDate){
+            if (startDateUpdated){
                 options.dateUpdated = {};
-                options.dateUpdated.$gte = startDate;
+                options.dateUpdated.$gte = startDateUpdated;
             }
 
-            if(endDate){
+            if(endDateUpdated){
                 options.dateUpdated = options.dateUpdated || {};
-                options.dateUpdated.$lte = endDate;
+                options.dateUpdated.$lte = endDateUpdated;
+            }
+
+            if (startDateCreated){
+                options.dateCreated = {};
+                options.dateCreated.$gte = startDateCreated;
+            }
+
+            if(endDateCreated){
+                options.dateCreated = options.dateUpdated || {};
+                options.dateCreated.$lte = endDateCreated;
+            }
+
+            if(isDone == true || isDone == false){
+                options.isDone = {};
+                options.isDone.$gte = isDone;
             }
 
             //check just before 32mins on validation and open api
@@ -84,13 +97,19 @@ exports.getMany = app => { //arrow function which allows modification of global 
                 .sort({
                     // this forces to start the query on startDate if and when
                     //startDate only exists
-                    dateUpdated: startDate && !endDate ? 1 : -1
+                    isDone: isDone ? 1 : -1,
+                    dateCreated: startDateCreated && !endDateCreated ? 1 : -1,
+                    dateUpdated: startDateUpdated && !endDateUpdated ? 1 : -1
                 })
                 .exec();
             
             //force sort to do a descending order
-            if (startDate && !endDate){
+            if (startDateUpdated && !endDateUpdated){
                 data.sort((prev,next) => next.dateUpdated - prev.dateUpdated);
+            }
+
+            if (startDateCreated && !endDateCreated){
+                data.sort((prev,next) => next.dateCreated - prev.dateCreated);
             }
             
             return {
