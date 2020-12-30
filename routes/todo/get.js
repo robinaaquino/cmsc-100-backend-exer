@@ -1,8 +1,8 @@
 /**
  * Task Module (GET get one task)
- * - can only be done by owner of the task or the admin of the task
-- the object returned should have the username, text, isDone, dateUpdated, and dateCreated
-- if taskId given in parameter is not found in database, return bad request (404)
+ * - can only be done by owner of the task or the admin of the task **finished
+- the object returned should have the username, text, isDone, dateUpdated, and dateCreated **finished
+- if taskId given in parameter is not found in database, return bad request (404) **finished alongside exer
  */
 
 const { Todo } = require('../../db');
@@ -43,10 +43,16 @@ exports.get = app => { //arrow function which allows modification of global vari
          */
         handler: async(request, response) => { //since we aren't using responses?? might need to consult what this means, request allows pagination, get method will not read the payload so we use query params
             const { params, user } = request; //use url to get info
-            const { username } = user;
+            const { username, isAdmin } = user;
             const { id } = params;
-        
-            const data = await Todo.findOne({ id, username }).exec();
+            
+            var data = await Todo.findOne({ id, username }).exec();
+
+            if(isAdmin == true){ //if admin
+                data = await Todo.findOne({ id }).exec();
+            } else {
+                data = await Todo.findOne({ id, username }).exec();
+            } 
 
             if (!data){
                 return response
