@@ -55,11 +55,12 @@ exports.getMany = app => { //arrow function which allows modification of global 
             const { usernameFilter, isDone, startDateCreated, endDateCreated, startDateUpdated, endDateUpdated } = query; //whenever we get a query, it's returned as a string so we need to transform it into a number
             var { limit = 10 } = query;
 
+            console.log(JSON.stringify(usernameFilter));
+            console.log(username);
+
             if(limit > 50){
                 limit = 50;
             }
-
-            console.log(usernameFilter);
 
             var options = {};
             
@@ -72,7 +73,8 @@ exports.getMany = app => { //arrow function which allows modification of global 
                 options.username.$gte = usernameFilter;
             }
 
-            console.log(options.username);
+            console.log(JSON.stringify(options.username));
+            // console.log(usernameFilter);
 
             if (startDateUpdated){
                 options.dateUpdated = {};
@@ -107,6 +109,7 @@ exports.getMany = app => { //arrow function which allows modification of global 
                 .sort({
                     // this forces to start the query on startDate if and when
                     //startDate only exists
+                    // username: usernameFilter ? 1 : -1,
                     username: usernameFilter ? 1 : -1,
                     isDone: isDone ? 1 : -1,
                     dateCreated: startDateCreated && !endDateCreated ? 1 : -1,
