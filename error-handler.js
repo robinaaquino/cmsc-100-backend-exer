@@ -13,6 +13,7 @@ exports.errorHandler = (error, request, response) => {
         'todo/unauthorized': 'You are not authorized to use this path',
         'todo/forbidden': 'As an admin, you can\'t update text',
         'user/not-found': 'User cannot be found using the given username',
+        'user/username-not-found': 'User cannot be found using the givern username',
         'user/forbidden': 'Similar username already exists',
         'request/malformed': 'Payload doesn\'t have the necessary properties',
         'auth/wrong-password': 'Password is not correct',
