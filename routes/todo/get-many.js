@@ -5,7 +5,8 @@
 - when admin types, should return all tasks or when there's a filter of username
 - both owner and admin can further filter their list by isDone property **finished
 - can have a limit with not more than 50. Default is 10. **finished
-- each object in the array should have: username, text, isDone , dateUpdated, dateCreated
+- each object in the array should have: username, text, isDone , dateUpdated, dateCreated **finished
+    
 - it should sort the array in terms of dateCreated or dateUpdated in a descending order only **finished
 - it should do pagination in terms of startDateCreated, endDateCreated, startDateUpdated, endDateUpdated (all can be used in one query) **finished
  */
