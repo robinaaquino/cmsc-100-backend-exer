@@ -11,6 +11,7 @@ exports.errorHandler = (error, request, response) => {
     const errors = {
         'todo/not-found': 'Todo cannot be found using the given ID',
         'todo/unauthorized': 'You are not authorized to use this path',
+        'todo/forbidden': 'As an admin, you can\'t update text',
         'user/not-found': 'User cannot be found using the given username',
         'user/forbidden': 'Similar username already exists',
         'request/malformed': 'Payload doesn\'t have the necessary properties',
