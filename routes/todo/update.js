@@ -2,9 +2,9 @@
  * Task Module (PUT update task)
  * - Can be done by the owner or admin type
 - owner can update text or isDone but not all are required **finished alongside exer
-- admin type can only update isDone
-- if no payload has been sent or payload is empty, return bad request (400)
-- if admin type updates text, return forbidden (403)
+- admin type can only update isDone **finished
+- if no payload has been sent or payload is empty, return bad request (400) **finished alongside exer
+- if admin type updates text, return forbidden (403) **finished
 - if taskId in the parameter is not found in the database, return no found (404) **finished alongside exer
 - dateUpdated should be updated with the current date **finished alongside exer
 _ should return text, username, isDone, dateCreated, and dateUpdated **finished alongside exer
@@ -48,48 +48,77 @@ exports.update = app => { //arrow function which allows modification of global v
          */
         handler: async (request, response) => { //since we aren't using responses?? might need to consult what this means, request allows pagination, get method will not read the payload so we use query params
             const { params, body, user } = request; //use url to get info
-            const { username } = user;
+            const { username, isAdmin } = user; //get username and isAdmin from user
             const { id } = params;
             //get text and isDone from body
             //ensure that when using Postman to check this that it's set to json not text
 
-
-            //current code updates text and isDone for given id and username
-            //does not allow modification of tasks of other usernames
+            var data = await Todo.findOne({ id, username }).exec();
             const { text, isDone } = body;
-        
+
             //expect that we should be getting at least a text or a isDone property
             if (!text && (isDone === null || isDone === undefined)){ 
                 return response
                     .badRequest('request/malformed')
             }
 
-            const oldData = await Todo.findOne({ id, username }).exec();
+            if (isAdmin == true){
+                if(text){
+                    return response
+                        .forbidden('todo/forbidden')
+                }
 
-            if (!oldData){ //if there's no task
-                return response
-                    .notFound('todo/not-found')
-            } 
+                const oldData = await Todo.findOne({id}).exec();
 
-            const update = {};
+                if(!oldData){ //there's no task of the id
+                    return response
+                        .notFound('todo/not-found')
+                }
 
-            if(text){ //updates text
-                update.text = text;
+                const update = {};
+
+                if(isDone !== undefined && isDone !== null){ //updates isDone
+                    update.isDone = isDone;
+                }
+
+                update.dateUpdated = new Date().getTime(); //updates dateUpdated
+
+                data = await Todo.findOneAndUpdate(
+                    { id },
+                    update,
+                    { new: true } //i want to see new object that I created
+                )
+                    .exec();
+
+            } else {
+                //current code updates text and isDone for given id and username
+                //does not allow modification of tasks of other usernames
+                const oldData = await Todo.findOne({ id, username }).exec();
+
+                if (!oldData){ //if there's no task
+                    return response
+                        .notFound('todo/not-found')
+                } 
+
+                const update = {};
+
+                if(text){ //updates text
+                    update.text = text;
+                }
+
+                if(isDone !== undefined && isDone !== null){ //updates isDone
+                    update.isDone = isDone;
+                }
+
+                update.dateUpdated = new Date().getTime(); //updates dateUpdated
+
+                data = await Todo.findOneAndUpdate(
+                    { id },
+                    update,
+                    { new: true } //i want to see new object that I created
+                )
+                    .exec();
             }
-
-            if(isDone !== undefined && isDone !== null){ //updates isDone
-                update.isDone = isDone;
-            }
-
-            update.dateUpdated = new Date().getTime(); //updates dateUpdated
-
-            const data = await Todo.findOneAndUpdate(
-                { id },
-                update,
-                { new: true } //i want to see new object that I created
-            )
-                .exec();
-
 
             return {
                 success: true,
