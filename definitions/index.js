@@ -94,7 +94,6 @@ const TodoFullData = {
     type: 'object',
     description: 'Todo object data coming from the database',
     properties: {
-        id: UniqueIDData,
         text: TextData,
         isDone: isDoneData,
         username: UsernameData,
