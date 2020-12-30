@@ -1,6 +1,6 @@
 /**
  * Task Module (PUT update task)
- * - Can be done by the owner or admin type
+ * - Can be done by the owner or admin type **finished
 - owner can update text or isDone but not all are required **finished alongside exer
 - admin type can only update isDone **finished
 - if no payload has been sent or payload is empty, return bad request (400) **finished alongside exer
@@ -62,6 +62,7 @@ exports.update = app => { //arrow function which allows modification of global v
                     .badRequest('request/malformed')
             }
 
+            //is admin type also an owner of their own tasks? ask sir tj
             if (isAdmin == true){
                 if(text){
                     return response
