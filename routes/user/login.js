@@ -53,6 +53,7 @@ exports.login = app => {
             const data = app.jwt.sign({
                 username
             }); //enveloping payload with username
+            //^the token from the username
 
             request.session.token = data;
 
