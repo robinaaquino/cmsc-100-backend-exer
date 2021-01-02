@@ -12,6 +12,7 @@ exports.errorHandler = (error, request, response) => {
         'todo/not-found': 'Todo cannot be found using the given ID',
         'todo/unauthorized': 'You are not authorized to use this path',
         'todo/forbidden': 'As an admin, you can\'t update text',
+        'user/unauthorized': 'You are not authorized to use this path',
         'user/not-found': 'User cannot be found using the given username',
         'user/username-not-found': 'User cannot be found using the givern username',
         'user/forbidden': 'Similar username already exists',
