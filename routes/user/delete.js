@@ -1,12 +1,12 @@
 /**
  * User Module (DELETE delete a user)
- * - can only be done by owner of the user account or admin type user
-- if userId in parameter is not found in database, return bad request (404)
+ * - can only be done by owner of the user account or admin type user **finished
+- if userId in parameter is not found in database, return bad request (404) **finished
  */
 
 const { User } = require('../../db');
 const { definitions } = require('../../definitions');
-const { GetOneUserParams, GetOneUserResponse } = definitions //CHANGE GETONEUSERRESPONSE TO SUCCESS RESPONSE
+const { GetOneUserParams, SuccessResponse } = definitions //CHANGE GETONEUSERRESPONSE TO SUCCESS RESPONSE
 
 /**
  * Deletes one todo
@@ -15,14 +15,14 @@ const { GetOneUserParams, GetOneUserResponse } = definitions //CHANGE GETONEUSER
  */
 exports.deleteOne = app => { //arrow function which allows modification of global variables,
     
-    app.delete('/user/:username', {
+    app.delete('/user/:userId', {
         schema: {
             description: 'Delete one user',
             tags: ['User'],
             summary: 'Delete one user',
             params: GetOneUserParams,
             response: {
-                200: GetOneUserResponse //CHANGE TO SUCCESS RESPONSE
+                200: SuccessResponse //CHANGE TO SUCCESS RESPONSE
             },
             security: [
                 {
@@ -43,25 +43,26 @@ exports.deleteOne = app => { //arrow function which allows modification of globa
             const { params, user } = request; //use url to get info
             const { username, isAdmin } = user;
             const { userId } = params;
-          
-            const data = await User.findOne({ userId }).exec();
+
+            var data = await User.findOne({ username: userId }).exec();
 
             if (!data){
                 return response
-                    .notFound('user/not-found')
+                    .notFound('user/not-found');
             }
-            
-            console.log(username);
-            console.log(data.username);
 
-            if(isAdmin == true || data.username === username){
-                return {
-                    success: true,
-                    data
-                }
+            if (isAdmin == true){
+                data = await User.findOneAndDelete({ username: userId }).exec();
+            } else if (data.username == username){
+                data = await User.findOneAndDelete({ username: userId });
             } else {
                 return response
                     .unauthorized('user/unauthorized');
+            }
+         
+            return {
+                success: true,
+                data
             }
         }
     });
