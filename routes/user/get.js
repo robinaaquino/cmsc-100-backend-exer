@@ -1,9 +1,9 @@
 /**
  * User Module (GET one user)
- * - can only be done by the owner of the account or an admin type user
-- should not show the password
-- should show only the username, first name, last name, isAdmin, dateCreated, dateUpdated
-- if userId given in parameter is not found in database, return bad request (404)
+ * - can only be done by the owner of the account or an admin type user **finished
+- should not show the password **finished
+- should show only the username, first name, last name, isAdmin, dateCreated, dateUpdated **finished alongside exer
+- if userId given in parameter is not found in database, return bad request (404) **finished
  */
 
 const { User } = require('../../db');
@@ -17,7 +17,7 @@ const { GetOneUserParams, GetOneUserResponse } = definitions
  */
 exports.get = app => { //arrow function which allows modification of global variables,
     
-    app.get('/user/:username', {
+    app.get('/user/:userId', {
         schema: {
             description: 'Get one user',
             tags: ['User'],
@@ -44,27 +44,29 @@ exports.get = app => { //arrow function which allows modification of global vari
          */
         handler: async(request, response) => { //since we aren't using responses?? might need to consult what this means, request allows pagination, get method will not read the payload so we use query params
             const { params, user } = request; //use url to get info
-            const { username } = user; //getting username of user
-            const { isAdmin } = user; //getting isAdmin property of user
+            const { username, isAdmin } = user; //getting username and isAdmin of user
             const { userId } = params; //getting userId of params
-
         
-            const data = await User.findOne({ userId, username }).exec();
+            var data = await User.findOne({ username: userId }).exec();
 
             if (!data){
                 return response
-                    .notFound('user/not-found')
+                    .notFound('user/not-found');
             }
 
-            if ((username === userId) || (isAdmin == true)){
-                return {
-                    success: true,
-                    data
-                };
+            if (isAdmin == true){
+                data = await User.findOne({ username: userId }).exec();
+            } else if (data.username == username){
+                data = await User.findOne({ username: userId });
             } else {
                 return response
-                    .unauthorized('auth/unauthorized')
-            } 
+                    .unauthorized('user/unauthorized');
+            }
+         
+            return {
+                success: true,
+                data
+            }
         }
     }); 
 }; // dont forget semi-colon
