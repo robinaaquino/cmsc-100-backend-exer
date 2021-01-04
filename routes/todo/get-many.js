@@ -8,7 +8,7 @@
 - each object in the array should have: username, text, isDone , dateUpdated, dateCreated **finished
     
 - it should sort the array in terms of dateCreated or dateUpdated in a descending order only **finished
-- it should do pagination in terms of startDateCreated, endDateCreated, startDateUpdated, endDateUpdated (all can be used in one query) **finished
+- it should do pagination in terms of startDateCreated, endDateCreated, startDateUpdated, endDateUpdated (all can be used in one query) 
  */
 
 const { Todo } = require('../../db');
