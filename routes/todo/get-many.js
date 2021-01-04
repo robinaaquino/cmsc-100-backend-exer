@@ -1,8 +1,8 @@
 /**
  * Task Module (GET get many)
- * - can be done by owner of the tasks or admin type only
-- when owner gets, should only return their own tasks
-- when admin types, should return all tasks or when there's a filter of username
+ * - can be done by owner of the tasks or admin type only **finished
+- when owner gets, should only return their own tasks **finished
+- when admin types, should return all tasks or when there's a filter of username **finished
 - both owner and admin can further filter their list by isDone property **finished
 - can have a limit with not more than 50. Default is 10. **finished
 - each object in the array should have: username, text, isDone , dateUpdated, dateCreated **finished
@@ -56,9 +56,6 @@ exports.getMany = app => { //arrow function which allows modification of global 
             const { usernameFilter, isDone, startDateCreated, endDateCreated, startDateUpdated, endDateUpdated } = query; //whenever we get a query, it's returned as a string so we need to transform it into a number
             var { limit = 10 } = query;
 
-            console.log(JSON.stringify(usernameFilter));
-            console.log(username);
-
             if(limit > 50){
                 limit = 50;
             }
@@ -69,13 +66,11 @@ exports.getMany = app => { //arrow function which allows modification of global 
                 options = { username };
             } 
 
-            if(usernameFilter){
+            if(usernameFilter && (user.isAdmin == true || usernameFilter == username)){
                 options.username = {};
                 options.username.$gte = usernameFilter;
+                options.username.$lte = usernameFilter;
             }
-
-            console.log(JSON.stringify(options.username));
-            // console.log(usernameFilter);
 
             if (startDateUpdated){
                 options.dateUpdated = {};
