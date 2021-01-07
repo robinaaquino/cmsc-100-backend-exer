@@ -61,6 +61,34 @@ const isDoneData = {
     example: 'true'
 };
 
+const ifSortByDateCreatedData = {
+    type: 'boolean',
+    description: 'If to be sorted by date created',
+    value: 'true',
+    example: 'true'
+}
+
+const ifSortByDateUpdatedData = {
+    type: 'boolean',
+    description: 'If to be sorted by date updated',
+    value: 'true',
+    example: 'true'
+}
+
+const ifSortByUsernameData = {
+    type: 'boolean',
+    description: 'If to be sorted by username',
+    value: 'true',
+    example: 'true'
+}
+
+const isAscendingData = {
+    type: 'boolean',
+    description: 'If to be sorted in an ascending order',
+    value: 'true',
+    example: 'true'
+}
+
 const DateData = {
     type: 'number',
     description: 'A date value that is in Unix Epoch',
@@ -122,6 +150,25 @@ const GetManyTodoQuery = {
     }
 }
 
+const GetManyUserQuery = {
+    type: 'object',
+    description: 'Query parameters for getting many todos',
+    properties: {
+        limit: LimitData,
+        startDateCreated: DateData,
+        endDateCreated: DateData,
+        startDateUpdated: DateData,
+        endDateUpdated: DateData,
+        isAdminFilter: isAdminData,
+        startUsername: UsernameData,
+        endUsername: UsernameData,
+        ifSortByDateCreated: ifSortByDateCreatedData,
+        ifSortByDateUpdated: ifSortByDateUpdatedData,
+        ifSortByUsername: ifSortByUsernameData,
+        isAscendingElseDescending: isAscendingData
+    }
+}
+
 const GetOneTodoParams = {
     type: 'object',
     description: 'Parameters for getting one todo',
@@ -140,7 +187,7 @@ const GetOneUserParams = { //for getting one user, implementing, get one user
 
 const UserFullData = {
     type: 'object',
-    description: 'User data for response without the password',
+    description: 'User data for get one response without the password',
     properties: {
         username: UsernameData,
         firstName: FirstNameData,
@@ -151,20 +198,38 @@ const UserFullData = {
     }
 }
 
+const PutUserRequest = {
+    type: 'object',
+    description: 'User data for updating a user',
+    properties: {
+        password: PasswordData,
+        firstName: FirstNameData,
+        lastName: LastNameData,
+        isAdmin: isAdminData
+    }
+}
+
+const GetManyUserFullData = {
+    type: 'object',
+    description: 'User data for get many response without first name, last name and isAdmin',
+    properties: {
+        username: UsernameData,
+        isAdmin: isAdminData,
+        dateCreated: DateData,
+        dateUpdated: DateData
+    }
+}
+
+const GetManyUserListData = {
+    type: 'array',
+    description: 'A list of users',
+    items: GetManyUserFullData
+}
+
 const UserListData = { //for getting many users, not implemented
     type: 'array',
     description: 'A list of users',
     items: UserFullData
-}
-
-const GetOneUserResponse = {
-    type: 'object',
-    description: 'Returns a user',
-    required: ['success','data'],
-    properties: {
-        success: SuccessData,
-        data: UserFullData
-    }
 }
 
 const GetManyTodoResponse = {
@@ -174,6 +239,16 @@ const GetManyTodoResponse = {
     properties: {
         success: SuccessData,
         data: TodoListData
+    }
+}
+
+const GetManyUserResponse = {
+    type: 'object',
+    description: 'Returns a list of todos',
+    required: ['success', 'data'],
+    properties: {
+        success: SuccessData,
+        data: GetManyUserListData
     }
 }
 
@@ -245,7 +320,7 @@ const GetOneTodoResponseCreate = {
     }
 }
 
-const GetOneUserReponse = {
+const GetOneUserResponse = {
     type: 'object',
     description: 'Returns a user',
     required: ['success', 'data'],
@@ -265,6 +340,8 @@ const LoginResponse = {
     }
 }
 
+
+
 exports.definitions = {
     SuccessResponse,
     GetManyTodoResponse,
@@ -278,5 +355,10 @@ exports.definitions = {
     LoginResponse,
     GetOneUserParams,
     PostUserRequestLogin,
-    GetOneTodoResponseCreate
+    GetOneTodoResponseCreate,
+    GetManyUserQuery,
+    GetManyUserResponse,
+    GetManyUserFullData,
+    GetManyUserListData,
+    PutUserRequest
 } //13:30 //openssl command incomplete at 6:24
