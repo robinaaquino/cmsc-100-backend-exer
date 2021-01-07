@@ -13,10 +13,11 @@
 - if admin, should return only username, isAdmin, dateCreated, dateUpdated
  */
 
+const bcrypt = require('bcrypt');
 const { User } = require('../../db');
 const { definitions } = require('../../definitions');
-const { GetOneUserResponse, PutUserRequest, GetOneUserParams } = definitions
-
+const { UpdateOneUserResponse, PutUserRequest, GetOneUserParams } = definitions
+const saltRounds = 10;
 /**
  * Updates one user
  * 
@@ -31,7 +32,7 @@ exports.update = app => { //arrow function which allows modification of global v
             body: PutUserRequest,
             params: GetOneUserParams,
             response: {
-                200: GetOneUserResponse
+                200: UpdateOneUserResponse
             },
             security: [
                 {
@@ -55,8 +56,6 @@ exports.update = app => { //arrow function which allows modification of global v
             const { userId } = params;
             //get text and isDone from body
             //ensure that when using Postman to check this that it's set to json not text
-            
-            var data = await User.findOne({ username: userId }).exec();
 
             const { password, firstName, lastName, isAdmin } = body;
 
@@ -66,9 +65,7 @@ exports.update = app => { //arrow function which allows modification of global v
                 return response
                     .notFound('user/not-found');
             }
-
-            console.log(user.isAdmin);
-
+            
             if(user.isAdmin == true){ //if user is admin
                 // const { password, isAdmin } = body;
 
@@ -89,22 +86,27 @@ exports.update = app => { //arrow function which allows modification of global v
                 }
 
                 if(password){
-                    update.password = password;
+                    const hash = await bcrypt.hash(password, saltRounds);
+                    update.password = hash;
                 }
 
                 update.dateUpdated = new Date().getTime();
 
                 console.log(update);
 
-                data = await User.findOneAndUpdate(
+                const adminUser = await User.findOneAndUpdate(
                     { username: userId },
                     update,
                     { new: true }
                 )
+                
 
-                console.log(data);
+                return {
+                    success: true,
+                    adminUser
+                }
             } else { //if not admin
-                if(data.username != username){
+                if(oldData.username != username){
                     return response
                         .unauthorized('user/unauthorized');
                 }
@@ -116,7 +118,7 @@ exports.update = app => { //arrow function which allows modification of global v
                         .badRequest('request/malformed')
                 }
 
-                if(isAdmin){ //if trying to change isAdmin
+                if(isAdmin || oldData.isAdmin == false){ //if trying to change isAdmin
                     return response
                         .forbidden('user/forbidden')
                 }
@@ -124,7 +126,8 @@ exports.update = app => { //arrow function which allows modification of global v
                 const update = {}
 
                 if(password){
-                    update.password = password;
+                    const hash = await bcrypt.hash(password, saltRounds);
+                    update.password = hash;
                 }
 
                 if(firstName){
@@ -139,19 +142,17 @@ exports.update = app => { //arrow function which allows modification of global v
 
                 // console.log(update);
 
-                data = await User.findOneAndUpdate(
+                const ownerUser = await User.findOneAndUpdate(
                     { username: userId },
                     update,
                     { new: true }
                 )
 
-                console.log(data);
+                return {
+                    success: true,
+                    ownerUser
+                }
             }
-
-            return {
-                success: true,
-                data
-            };
         }
     }); 
 }; // dont forget semi-colon
