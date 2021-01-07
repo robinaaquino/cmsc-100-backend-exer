@@ -320,6 +320,41 @@ const GetOneTodoResponseCreate = {
     }
 }
 
+const ownerUserData = {
+    type: 'object',
+    description: 'Returns user information for owner update',
+    properties: {
+        username: UsernameData,
+        firstName: FirstNameData,
+        lastName: LastNameData,
+        isAdmin: isAdminData,
+        dateCreated: DateData,
+        dateUpdated: DateData 
+    }
+}
+
+const adminUserData = {
+    type: 'object',
+    description: 'Returns user information for admin update',
+    properties: {
+        username: UsernameData,
+        isAdmin: isAdminData,
+        dateCreated: DateData,
+        dateUpdated: DateData 
+    }
+}
+
+const UpdateOneUserResponse = {
+    type: 'object',
+    description: 'Returns a user',
+    required: ['success'],
+    properties: {
+        success: SuccessData,
+        ownerUser: ownerUserData,
+        adminUser: adminUserData
+    }
+}
+
 const GetOneUserResponse = {
     type: 'object',
     description: 'Returns a user',
@@ -360,5 +395,6 @@ exports.definitions = {
     GetManyUserResponse,
     GetManyUserFullData,
     GetManyUserListData,
-    PutUserRequest
+    PutUserRequest,
+    UpdateOneUserResponse
 } //13:30 //openssl command incomplete at 6:24
