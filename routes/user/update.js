@@ -1,16 +1,16 @@
 /**
  * User Module (PUT update a user)
- * - can only be done by the owner of the account or admin type user
-- owner of account can take in password, first name, last name but not all are required.
-- if admin type user, can only change password or isAdmin 
-- if no payload has been sent or payload is empty, return bad request (400)
-- if owner of account and not admin and updates isAdmin, return forbidden (403)
-- if admin type user and updates first name or last name, return forbidden (403)
-- if admin type user removes isAdmin status on himself and there are no admins left in the list, it should return forbidden (403) and should not update the database
-- if userId in the parameter is not found in the database, return not found (404)
-- dateUpdated should be updated with the current date
-- if owner of account, should return username, firstname, lastname, isAdmin, dateCreated, dateUpdated
-- if admin, should return only username, isAdmin, dateCreated, dateUpdated
+ * - can only be done by the owner of the account or admin type user **finished
+- owner of account can take in password, first name, last name but not all are required. **finished
+- if admin type user, can only change password or isAdmin **finished
+- if no payload has been sent or payload is empty, return bad request (400) **finished
+- if owner of account and not admin and updates isAdmin, return forbidden (403) **finished
+- if admin type user and updates first name or last name, return forbidden (403) **finished
+- if admin type user removes isAdmin status on himself and there are no admins left in the list, it should return forbidden (403) and should not update the database **finished
+- if userId in the parameter is not found in the database, return not found (404) **finished
+- dateUpdated should be updated with the current date **finished
+- if owner of account, should return username, firstname, lastname, isAdmin, dateCreated, dateUpdated **finished
+- if admin, should return only username, isAdmin, dateCreated, dateUpdated **finished
  */
 
 const bcrypt = require('bcrypt');
@@ -65,16 +65,18 @@ exports.update = app => { //arrow function which allows modification of global v
                 return response
                     .notFound('user/not-found');
             }
-            
+
             if(user.isAdmin == true){ //if user is admin
                 // const { password, isAdmin } = body;
+
+                
 
                 if(!password && (isAdmin === null || isAdmin === undefined)){ //at least has one
                     return response
                         .badRequest('request/malformed')
                 }
 
-                if(firstName && lastName){ //if there's first name or last name
+                if(firstName || lastName){ //if there's first name or last name
                     return response
                         .forbidden('user/forbidden')
                 }
@@ -82,6 +84,17 @@ exports.update = app => { //arrow function which allows modification of global v
                 const update = {};
 
                 if(isAdmin !== null && isAdmin !== undefined){
+                    if(isAdmin == false){
+                        var isAdminDB = await User
+                            .find({ isAdmin: true });
+
+                        if (userId == username){
+                            if(isAdminDB.length <= 1){
+                                return response
+                                    .forbidden('user/forbidden');
+                            }
+                        }
+                    }
                     update.isAdmin = isAdmin;
                 }
 
@@ -91,8 +104,6 @@ exports.update = app => { //arrow function which allows modification of global v
                 }
 
                 update.dateUpdated = new Date().getTime();
-
-                console.log(update);
 
                 const adminUser = await User.findOneAndUpdate(
                     { username: userId },
@@ -106,6 +117,8 @@ exports.update = app => { //arrow function which allows modification of global v
                     adminUser
                 }
             } else { //if not admin
+                console.log(oldData.username);
+                console.log(username);
                 if(oldData.username != username){
                     return response
                         .unauthorized('user/unauthorized');
@@ -118,7 +131,7 @@ exports.update = app => { //arrow function which allows modification of global v
                         .badRequest('request/malformed')
                 }
 
-                if(isAdmin || oldData.isAdmin == false){ //if trying to change isAdmin
+                if(isAdmin == true || isAdmin == false){ //if trying to change isAdmin
                     return response
                         .forbidden('user/forbidden')
                 }

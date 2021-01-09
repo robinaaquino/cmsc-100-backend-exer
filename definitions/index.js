@@ -347,9 +347,7 @@ const adminUserData = {
 const UpdateOneUserResponse = {
     type: 'object',
     description: 'Returns a user',
-    required: ['success'],
     properties: {
-        success: SuccessData,
         ownerUser: ownerUserData,
         adminUser: adminUserData
     }
