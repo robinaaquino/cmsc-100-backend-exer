@@ -13,7 +13,8 @@ module.exports=(mongoose) => {
         },
         token: {
             type: String,
-            required: true
+            required: true,
+            index: true
         },
         dateCreated: {
             type: Number,
