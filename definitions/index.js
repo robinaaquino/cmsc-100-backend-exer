@@ -373,6 +373,24 @@ const LoginResponse = {
     }
 }
 
+const JWTResponse = {
+    type: 'object',
+    description: 'Returns a success and JWT Token',
+    require: ['success'],
+    properties: {
+        success: SuccessData,
+        data: JWTData
+    }
+}
+
+const AuthQuery = {
+    type: 'object',
+    description: 'Accepts tokens',
+    properties: {
+        tokenQuery: JWTData
+    }
+}
+
 
 
 exports.definitions = {
@@ -394,5 +412,7 @@ exports.definitions = {
     GetManyUserFullData,
     GetManyUserListData,
     PutUserRequest,
-    UpdateOneUserResponse
+    UpdateOneUserResponse,
+    JWTResponse,
+    AuthQuery
 } //13:30 //openssl command incomplete at 6:24
