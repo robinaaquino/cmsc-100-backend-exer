@@ -43,8 +43,8 @@ const isAdminData = {
 const PasswordData = {
     type: 'string',
     description: "Password string",
-    value: '3b84349fa82e4a17a711e25afaaf69ef',
-    example: '3b84349fa82e4a17a711e25afaaf69ed12345678'    
+    value: 'passwordpassword',
+    example: 'passwordpassword'    
 }
 
 const TextData = {
