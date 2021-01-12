@@ -6,14 +6,14 @@
 - isAdmin property is default false **finished
 - should encrypt the password before saving in the database **finished
 - should return a 403 (forbidden) if a similar username already exists **finished
-- should return a 400 (bad request) if password is less than 12 characters and has numbers and special characters
-- should return only success true when an account has been created
+- should return a 400 (bad request) if password is less than 12 characters and has numbers and special characters **finished
+- should return only success true when an account has been created **finished
  */
 
 const bcrypt = require('bcrypt'); //encrypts password
 const { User } = require('../../db');
 const { definitions } = require('../../definitions');
-const { GetOneUserResponse, PostUserRequest } = definitions
+const { SuccessResponse, PostUserRequest } = definitions
 const saltRounds = 10;
 /**
  * this is the route for creating a user
@@ -28,7 +28,7 @@ exports.create = app => {
             summary: 'Create one user',
             body: PostUserRequest,
             response: {
-                200: GetOneUserResponse //using response we can filter out what we want to show on our response
+                200: SuccessResponse //using response we can filter out what we want to show on our response
             }
         },
 
@@ -42,11 +42,17 @@ exports.create = app => {
             const { body } = request;
             const { username, password, firstName, lastName, isAdmin = false } = body;
 
+            const passwordRegex = /^([A-Z]|[a-z]| ){12,}$/;
+
+            if(passwordRegex.test(password) == false){
+                return response
+                    .badRequest('user/bad-request');
+            }
+
             const hash = await bcrypt.hash(password, saltRounds);
 
             const user = await User.findOne({ username }).exec();
         
-
             if(user){ //handling error if there's a user with that username
                 return response
                     .forbidden('user/forbidden');
@@ -62,11 +68,8 @@ exports.create = app => {
 
             await data.save();
 
-            // console.log(data.toJSON()); //shows all data including password
-
             return {
-                success: true,
-                data
+                success: true
             }
         }
     
