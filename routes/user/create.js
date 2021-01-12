@@ -42,6 +42,11 @@ exports.create = app => {
             const { body } = request;
             const { username, password, firstName, lastName, isAdmin = false } = body;
 
+            if(!username || !password || !firstName || !lastName){
+                return response
+                    .badRequest('request/malformed');
+            }
+
             const passwordRegex = /^([A-Z]|[a-z]| ){12,}$/;
 
             if(passwordRegex.test(password) == false){
