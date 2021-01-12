@@ -105,7 +105,7 @@ const SuccessData = {
 
 const LimitData = {
     type: 'number',
-    description: 'Limit of how many items we should query',
+    description: 'Limit of how many items we should query. Any number higher than 50 is automatically turned into 50',
     value: 10,
     example: 10
 };
@@ -122,9 +122,9 @@ const TodoFullData = {
     type: 'object',
     description: 'Todo object data coming from the database',
     properties: {
+        username: UsernameData,
         text: TextData,
         isDone: isDoneData,
-        username: UsernameData,
         dateUpdated: DateData,
         dateCreated: DateData
     }
