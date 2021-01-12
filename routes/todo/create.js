@@ -38,7 +38,7 @@ exports.create = app => {
         ]),
 
         /**
-         * handles the request for a given route
+         * This creates one todo from the database given a payload
          * 
          * @param {import('fastify').FastifyRequest} request
          */
