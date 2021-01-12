@@ -13,7 +13,7 @@ const { definitions } = require('../../definitions');
 const { SuccessResponse, PostTodoRequest } = definitions 
 
 /**
- * this is the route for creating todos
+ * Creates todos
  * @param {*} app 
  */
 
