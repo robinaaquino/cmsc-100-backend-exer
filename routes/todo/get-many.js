@@ -95,6 +95,7 @@ exports.getMany = app => { //arrow function which allows modification of global 
             if(isDone == true || isDone == false){
                 options.isDone = {};
                 options.isDone.$gte = isDone;
+                options.isDone.$lte = isDone;
             }
 
             //check just before 32mins on validation and open api
