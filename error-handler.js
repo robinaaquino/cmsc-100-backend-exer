@@ -17,6 +17,7 @@ exports.errorHandler = (error, request, response) => {
         'user/username-not-found': 'User cannot be found using the givern username',
         'user/forbidden': 'You are not allowed to do this',
         'user/forbidden/get-many': 'Only choose one sort',
+        'user/bad-request': 'Password should not contain numbers and special characters, and must be longer than 12 characters',
         'request/malformed': 'Payload doesn\'t have the necessary properties',
         'auth/wrong-password': 'Password is not correct',
         'auth/no-authorization-header': 'No authorization header found',
