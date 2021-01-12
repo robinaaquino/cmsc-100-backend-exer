@@ -41,27 +41,21 @@ exports.create = app => {
          * handles the request for a given route
          * 
          * @param {import('fastify').FastifyRequest} request
-         * @param {import('fastify').FastifyReply<Response>} response
          */
-        handler: async (request, response) => {
+        handler: async (request) => {
             const { body, user } = request;
-
-            //get text and isDone with default false from body, regardless if it has
-            //a object value or null, which makes it return an empty object
-
-            //ensure that when using Postman to check this that it's set to json not text
-            const { text, isDone = false } = body;
+            const { text, isDone = false } = body; //sets the body
             const { username } = user;
 
-            const data = new Todo ({
+            const data = new Todo ({ //creates a new Todo with text, isDone and username property
                 text,
                 isDone,
                 username
             });
 
-            await data.save();
+            await data.save(); //saves the data object
 
-            return {
+            return { //returns a success
                 success: true
             }
         }
