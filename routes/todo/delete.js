@@ -46,15 +46,15 @@ exports.deleteOne = app => { //arrow function which allows modification of globa
 
             const data = await Todo.findOneAndDelete({ id }).exec(); //returns the deleted object
 
-            if(data.username != user.username){
-                return response
-                    .unauthorized('todo/unauthorized')
-            }
-
             if (!data){
                 return response
                     .notFound('todo/not-found')
             } 
+
+            if(data.username != username){
+                return response
+                    .unauthorized('todo/unauthorized')
+            }
 
             return {
                 success: true
