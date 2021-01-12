@@ -1,4 +1,4 @@
-/**
+/** Exercise Specifications
  * Task Module (POST create one task)
  * - can be done by a logged in user **finished
 - needs to take in text (required) and will return bad request (400) if no text is sent **finished
@@ -10,7 +10,7 @@
 
 const { Todo } = require('../../db');
 const { definitions } = require('../../definitions');
-const { GetOneTodoResponse, PostTodoRequest } = definitions //remember to change back to GetOneTodoResponseCreate
+const { SuccessResponse, PostTodoRequest } = definitions 
 
 /**
  * this is the route for creating todos
@@ -25,7 +25,7 @@ exports.create = app => {
             summary: 'Create one todo',
             body: PostTodoRequest,
             response: {
-                200: GetOneTodoResponse //remember to change back to GetOneTodoResponseCreate
+                200: SuccessResponse 
             },
             security: [
                 {
@@ -62,8 +62,7 @@ exports.create = app => {
             await data.save();
 
             return {
-                success: true,
-                data
+                success: true
             }
         }
     
