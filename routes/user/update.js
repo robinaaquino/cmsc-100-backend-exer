@@ -1,4 +1,4 @@
-/**
+/** Exercise Specification
  * User Module (PUT update a user)
  * - can only be done by the owner of the account or admin type user **finished
 - owner of account can take in password, first name, last name but not all are required. **finished
@@ -23,7 +23,7 @@ const saltRounds = 10;
  * 
  * @param {*} app 
  */
-exports.update = app => { //arrow function which allows modification of global variables,
+exports.update = app => {
     app.put('/user/:userId', {
         schema: {
             description: 'Update one user',
@@ -45,7 +45,7 @@ exports.update = app => { //arrow function which allows modification of global v
         ]),
 
         /**
-         * This updates one todo from the database given a unique ID and a payload
+         * This updates one user from the database given a unique ID and a payload
          * 
          * @param {import('fastify').FastifyRequest} request
          * @param {import('fastify').FastifyReply<Response>} response
@@ -53,119 +53,103 @@ exports.update = app => { //arrow function which allows modification of global v
         handler: async (request, response) => { //since we aren't using responses?? might need to consult what this means, request allows pagination, get method will not read the payload so we use query params
             const { params, body, user } = request; //use url to get info
             const { username } = user; //get username and isAdmin from user
-            const { userId } = params;
-            //get text and isDone from body
-            //ensure that when using Postman to check this that it's set to json not text
+            const { userId } = params; //gets userId from params
+            const { password, firstName, lastName, isAdmin } = body; //get these properties from a body
 
-            const { password, firstName, lastName, isAdmin } = body;
+            const oldData = await User.findOne({ username: userId}).exec(); //find user with given userId from User database
 
-            const oldData = await User.findOne({ username: userId}).exec();
-
-            if(!oldData){
+            if(!oldData){ //error handling if there's no oldData
                 return response
                     .notFound('user/not-found');
             }
 
             if(user.isAdmin == true){ //if user is admin
-                // const { password, isAdmin } = body;
-
-                
-
-                if(!password && (isAdmin === null || isAdmin === undefined)){ //at least has one
+                if(!password && (isAdmin === null || isAdmin === undefined)){ //assumes there's at least one property in the payload
                     return response
                         .badRequest('request/malformed')
                 }
 
-                if(firstName || lastName){ //if there's first name or last name
+                if(firstName || lastName){ //error handling if there's first name or last name in the payload as an admin
                     return response
                         .forbidden('user/forbidden')
                 }
 
-                const update = {};
+                const update = {}; //create an update object
 
-                if(isAdmin !== null && isAdmin !== undefined){
-                    if(isAdmin == false){
+                if(isAdmin !== null && isAdmin !== undefined){ //if there's a value for isAdmin
+                    if(isAdmin == false){ //if isAdmin is false
                         var isAdminDB = await User
-                            .find({ isAdmin: true });
+                            .find({ isAdmin: true }); //check if there's other admins in the user database
 
-                        if (userId == username){
-                            if(isAdminDB.length <= 1){
+                        if (userId == username){ //if userId is equal to username of user
+                            if(isAdminDB.length <= 1){ //error handling if there's only one admin left in the user database
                                 return response
                                     .forbidden('user/forbidden');
                             }
                         }
                     }
-                    update.isAdmin = isAdmin;
+                    update.isAdmin = isAdmin; //add isAdmin property in update
                 }
 
-                if(password){
-                    const hash = await bcrypt.hash(password, saltRounds);
-                    update.password = hash;
+                if(password){ //if there's a password
+                    const hash = await bcrypt.hash(password, saltRounds); //encrypt password
+                    update.password = hash; //add password property in update
                 }
 
-                update.dateUpdated = new Date().getTime();
+                update.dateUpdated = new Date().getTime(); //update dateUpdated property to current time in update
 
-                const adminUser = await User.findOneAndUpdate(
+                const adminUser = await User.findOneAndUpdate( //update the user info
                     { username: userId },
-                    update,
-                    { new: true }
+                    update
                 )
                 
-
-                return {
+                return { //return success and adminUser info
                     success: true,
                     adminUser
                 }
             } else { //if not admin
-                console.log(oldData.username);
-                console.log(username);
-                if(oldData.username != username){
+                if(oldData.username != username){ 
                     return response
                         .unauthorized('user/unauthorized');
-                }
+                } //error handling in trying to update a username aside from own username
 
-                // const { password, firstName, lastName } = body;
-
-                if(!password && !firstName && !lastName){ //at least has one
+                if(!password && !firstName && !lastName){ //at least has one property in payload
                     return response
                         .badRequest('request/malformed')
                 }
 
-                if(isAdmin == true || isAdmin == false){ //if trying to change isAdmin
+                if(isAdmin == true || isAdmin == false){ //if trying to change isAdmin as a non-admin
                     return response
                         .forbidden('user/forbidden')
                 }
 
-                const update = {}
+                const update = {} //create an update object
 
-                if(password){
-                    const hash = await bcrypt.hash(password, saltRounds);
-                    update.password = hash;
+                if(password){ //if there's a password
+                    const hash = await bcrypt.hash(password, saltRounds); //encrypt password
+                    update.password = hash; //add password property in update
                 }
 
-                if(firstName){
+                if(firstName){ //add firstName property in update object
                     update.firstName = firstName;
                 }
 
-                if(lastName){
+                if(lastName){ //add lastName property in update object
                     update.lastName = lastName;
                 }
 
-                update.dateUpdated = new Date().getTime();
-
-                // console.log(update);
+                update.dateUpdated = new Date().getTime(); //set dateUpdated property to current time in update object
 
                 const ownerUser = await User.findOneAndUpdate(
                     { username: userId },
-                    update,
-                    { new: true }
-                )
+                    update
+                ) //update the user info
 
-                return {
+                return { //return success and ownerUser info
                     success: true,
                     ownerUser
                 }
             }
         }
     }); 
-}; // dont forget semi-colon
+};

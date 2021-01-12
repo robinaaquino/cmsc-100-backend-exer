@@ -45,7 +45,7 @@ exports.create = app => {
         handler: async (request) => {
             const { body, user } = request;
             const { text, isDone = false } = body; //sets the body
-            const { username } = user;
+            const { username } = user; //gets username from user
 
             const data = new Todo ({ //creates a new Todo with text, isDone and username property
                 text,
@@ -59,9 +59,5 @@ exports.create = app => {
                 success: true
             }
         }
-    
-
     })
 };
-
-//10:50 at crud create part 1

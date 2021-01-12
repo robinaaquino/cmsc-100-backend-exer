@@ -9,7 +9,7 @@ const { DiscardedToken } = require('../../db');
 const { definitions } = require('../../definitions');
 const { AuthQuery, SuccessResponse } = definitions;
 /**
- * this is the route for logging out a user
+ * Logs out a user
  * @param {*} app 
  */
 
@@ -21,7 +21,7 @@ exports.logout = app => {
             summary: 'Logs out a user',
             query: AuthQuery,
             response: {
-                200: SuccessResponse //using response we can filter out what we want to show on our response
+                200: SuccessResponse
             },
             security: [
                 {
@@ -36,29 +36,29 @@ exports.logout = app => {
         ]),
 
         /**
-         * handles the request for a given route
+         * This logs out a user from a session
          * 
          * @param {import('fastify').FastifyRequest} request
          * @param {import('fastify').FastifyReply<Response>} response
          */
         handler: async (request, response) => {
-            const { user, query } = request;
-            const { username } = user;
-            const { tokenQuery } = query;
+            const { user, query } = request; 
+            const { username } = user; //gets username from user
+            const { tokenQuery } = query; //gets tokenQuery from query
 
-            if(tokenQuery != request.session.token || !tokenQuery){
+            if(tokenQuery != request.session.token || !tokenQuery){ //error handling if there's no tokenQuery or if tokenQuery is not equal to the session token
                 return response
                     .unauthorized('user/unauthorized')
             }
 
-            const data = new DiscardedToken({
+            const data = new DiscardedToken({ //creating a new object for the discarded token database
                 username,
                 token: tokenQuery
             });
 
-            await data.save();
+            await data.save(); //saves data
 
-            request.destroySession(() => {
+            request.destroySession(() => { //destroys the session
                 response.send({
                     success: true
                 })

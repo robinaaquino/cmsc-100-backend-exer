@@ -1,4 +1,4 @@
-/**
+/** Exercise Specifications
  * Task Module (PUT update task)
  * - Can be done by the owner or admin type **finished
 - owner can update text or isDone but not all are required **finished alongside exer
@@ -19,7 +19,7 @@ const { GetOneTodoResponse, PutTodoRequest, GetOneTodoParams } = definitions
  * 
  * @param {*} app 
  */
-exports.update = app => { //arrow function which allows modification of global variables,
+exports.update = app => {
     app.put('/todo/:id', {
         schema: {
             description: 'Update one todo',
@@ -46,62 +46,54 @@ exports.update = app => { //arrow function which allows modification of global v
          * @param {import('fastify').FastifyRequest} request
          * @param {import('fastify').FastifyReply<Response>} response
          */
-        handler: async (request, response) => { //since we aren't using responses?? might need to consult what this means, request allows pagination, get method will not read the payload so we use query params
-            const { params, body, user } = request; //use url to get info
+        handler: async (request, response) => {
+            const { params, body, user } = request;
             const { username, isAdmin } = user; //get username and isAdmin from user
-            const { id } = params;
-            //get text and isDone from body
-            //ensure that when using Postman to check this that it's set to json not text
+            const { id } = params; //gets id from params
+            const { text, isDone } = body; //gets text and isDone from body
 
-            var data = await Todo.findOne({ id, username }).exec();
-            const { text, isDone } = body;
-
-            //expect that we should be getting at least a text or a isDone property
-            if (!text && (isDone === null || isDone === undefined)){ 
+            var data = await Todo.findOne({ id, username }).exec(); //creates a data given id and username
+            
+            if (!text && (isDone === null || isDone === undefined)){ //assumes we get one property, if not
                 return response
                     .badRequest('request/malformed')
             }
 
-            //is admin type also an owner of their own tasks? ask sir tj
-            if (isAdmin == true){
-                if(text){
+            if (isAdmin == true){ //if admin
+                if(text){ //if tries to change text
                     return response
                         .forbidden('todo/forbidden')
                 }
 
-                const oldData = await Todo.findOne({id}).exec();
+                const oldData = await Todo.findOne({id}).exec(); //gets oldData given id
 
-                if(!oldData){ //there's no task of the id
+                if(!oldData){ //if there's no oldData
                     return response
                         .notFound('todo/not-found')
                 }
 
-                const update = {};
+                const update = {}; //creates an update object
 
                 if(isDone !== undefined && isDone !== null){ //updates isDone
                     update.isDone = isDone;
                 }
 
-                update.dateUpdated = new Date().getTime(); //updates dateUpdated
+                update.dateUpdated = new Date().getTime(); //updates dateUpdated with current time
 
-                data = await Todo.findOneAndUpdate(
+                data = await Todo.findOneAndUpdate( //finds a todo from the Todo database and updates with update object and given id
                     { id },
-                    update,
-                    { new: true } //i want to see new object that I created
+                    update
                 )
                     .exec();
-
-            } else {
-                //current code updates text and isDone for given id and username
-                //does not allow modification of tasks of other usernames
-                const oldData = await Todo.findOne({ id, username }).exec();
+            } else { //if not admin
+                const oldData = await Todo.findOne({ id, username }).exec(); //get oldData given id and username
 
                 if (!oldData){ //if there's no task
                     return response
                         .notFound('todo/not-found')
                 } 
 
-                const update = {};
+                const update = {}; //creates an update object
 
                 if(text){ //updates text
                     update.text = text;
@@ -113,18 +105,17 @@ exports.update = app => { //arrow function which allows modification of global v
 
                 update.dateUpdated = new Date().getTime(); //updates dateUpdated
 
-                data = await Todo.findOneAndUpdate(
+                data = await Todo.findOneAndUpdate( //finds a todo from the Todo database and updates with update object and given id
                     { id },
-                    update,
-                    { new: true } //i want to see new object that I created
+                    update
                 )
                     .exec();
             }
 
-            return {
+            return { //returns success and data
                 success: true,
                 data
             };
         }
     }); 
-}; // dont forget semi-colon
+};

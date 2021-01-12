@@ -10,7 +10,7 @@ const { definitions } = require('../../definitions');
 const { JWTResponse, AuthQuery } = definitions;
 
 /**
- * this is the route for checking if a user is authenticated
+ * Refreshes given token
  * @param {*} app 
  */
 
@@ -22,7 +22,7 @@ exports.refresh = app => {
             summary: 'Refresh the JWT Token',
             query: AuthQuery,
             response: {
-                200: JWTResponse //using response we can filter out what we want to show on our response
+                200: JWTResponse
             },
             security: [
                 {
@@ -42,37 +42,37 @@ exports.refresh = app => {
          */
         handler: async (request, response) => {
             const { query, user } = request;
-            const { tokenQuery } = query;
-            const { username } = user;
+            const { tokenQuery } = query; //get tokenQuery from query
+            const { username } = user; //get username from user
 
-            if(!tokenQuery){
+            if(!tokenQuery){ //error handling if there's no tokenQuery
                 return response
                     .forbidden('user/forbidden')
             }
 
-            const foundToken = await DiscardedToken.find({ username: username, token: tokenQuery }).exec();
+            const foundToken = await DiscardedToken.find({ username: username, token: tokenQuery }).exec(); //find the token from the DiscardedToken database
 
-            var data;
+            var data; //set the data variable
 
             if(foundToken.length == 0 || !foundToken){ //if token is not there, means it's unexpired
-                data = app.jwt.sign({
+                data = app.jwt.sign({ //get a new jwt
                     username
                 });
 
-                request.session.token = data;
+                request.session.token = data; //replace the session token with the new jwt
 
-                const newDiscardedToken = new DiscardedToken({
+                const newDiscardedToken = new DiscardedToken({ //create a new discarded token object
                     username,
                     token: tokenQuery
                 });
 
-                await newDiscardedToken.save();
+                await newDiscardedToken.save(); //save to the DiscardedToken database
 
-                return {
+                return { //return success and data
                     success: true,
                     data
                 }
-            } else {
+            } else { //if token is in the discardedToken database
                 return response
                     .forbidden('user/forbidden');
             }

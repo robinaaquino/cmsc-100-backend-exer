@@ -1,4 +1,4 @@
-/**
+/** Exercise Specification
  * User Module (GET one user)
  * - can only be done by the owner of the account or an admin type user **finished
 - should not show the password **finished
@@ -15,7 +15,7 @@ const { GetOneUserParams, GetOneUserResponse } = definitions
  * 
  * @param {*} app 
  */
-exports.get = app => { //arrow function which allows modification of global variables,
+exports.get = app => {
     
     app.get('/user/:userId', {
         schema: {
@@ -37,36 +37,34 @@ exports.get = app => { //arrow function which allows modification of global vari
         ]),
 
         /**
-         * This gets one todo from the database given a unique ID
+         * This gets one user from the database given a unique ID
          * 
          * @param {import('fastify').FastifyRequest} request
          * @param {import('fastify').FastifyReply<Response>} response
          */
-        handler: async(request, response) => { //since we aren't using responses?? might need to consult what this means, request allows pagination, get method will not read the payload so we use query params
-            const { params, user } = request; //use url to get info
+        handler: async(request, response) => {
+            const { params, user } = request;
             const { username, isAdmin } = user; //getting username and isAdmin of user
             const { userId } = params; //getting userId of params
         
-            var data = await User.findOne({ username: userId }).exec();
+            var data = await User.findOne({ username: userId }).exec(); //find the user with the given userId
 
-            if (!data){
+            if (!data){ //error handling if there's no data
                 return response
                     .notFound('user/not-found');
             }
 
-            if (isAdmin == true){
+            if (isAdmin == true || data.username == username){ //if user is an admin or the username of the data matches the user's username
                 data = await User.findOne({ username: userId }).exec();
-            } else if (data.username == username){
-                data = await User.findOne({ username: userId });
-            } else {
+            } else { //error handler if not authorized
                 return response
                     .unauthorized('user/unauthorized');
             }
          
-            return {
+            return { //returns success and data
                 success: true,
                 data
             }
         }
     }); 
-}; // dont forget semi-colon
+};

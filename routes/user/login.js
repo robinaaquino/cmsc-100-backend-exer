@@ -1,4 +1,4 @@
-/**
+/** Exercise Specifications
  * Login Module
  * - Password and username is required and will return bad request 400 if not supplied **finished, comes with exer code
 - if username doesn't exist, return not found 404 **finished
@@ -12,7 +12,7 @@ const { User } = require('../../db');
 const { definitions } = require('../../definitions');
 const { LoginResponse, PostUserRequestLogin } = definitions;
 /**
- * this is the route for creating a user
+ * Logins a user
  * @param {*} app 
  */
 
@@ -24,47 +24,47 @@ exports.login = app => {
             summary: 'Logs in a user',
             body: PostUserRequestLogin,
             response: {
-                200: LoginResponse //using response we can filter out what we want to show on our response
+                200: LoginResponse
             }
         },
 
         /**
-         * handles the request for a given route
+         * Logins a user
          * 
          * @param {import('fastify').FastifyRequest} request
          * @param {import('fastify').FastifyReply<Response>} response
          */
         handler: async (request, response) => {
-            const { body } = request;
-            const { username, password } = body;
+            const { body } = request; //gets body from request
+            const { username, password } = body; //gets username and password from body
 
-            const user = await User.findOne({ username }).exec();
+            if(!username && !password){ //if there's no username and password
+                return response
+                    .badRequest('request/malformed');
+            }
+
+            const user = await User.findOne({ username }).exec(); //finds user givern username
             
-            if(!user){
+            if(!user){ //error handler if there's no username
                 return response
                     .notFound('user/not-found')
-            } //BUG FIX doesn't work if there's no username in body
+            }
 
-            if(!(await bcrypt.compare(password, user.password))) {
+            if(!(await bcrypt.compare(password, user.password))) { //compare encrypted password with password from user database, error handler if not equal
                 return response
                     .unauthorized('auth/wrong-password');
             }
 
-            const data = app.jwt.sign({
+            const data = app.jwt.sign({ 
                 username
             }); //enveloping payload with username
-            //^the token from the username
 
-            request.session.token = data;
+            request.session.token = data; //sets the session token with the jwt
 
-            return {
+            return { //returns success and data
                 success: true,
                 data
             }
         }
-    
-
     })
 };
-
-//10:50 at crud create part 1

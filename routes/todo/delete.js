@@ -40,8 +40,8 @@ exports.deleteOne = app => {
          */
         handler: async (request, response) => { 
             const { params, user } = request; 
-            const { id } = params;
-            const { username } = user;
+            const { id } = params; //gets id from params
+            const { username } = user; //gets username from user
 
             const data = await Todo.findOneAndDelete({ id }).exec(); //returns the deleted object
 
@@ -55,7 +55,7 @@ exports.deleteOne = app => {
                     .unauthorized('todo/unauthorized')
             }
 
-            return {
+            return { //returns success
                 success: true
             };
         }

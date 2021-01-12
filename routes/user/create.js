@@ -1,4 +1,4 @@
-/**
+/** Exercise Specifications
  * User module (POST create one user)
  * - should create a user using username, password, first name and last name **finished
 - username, password, first name, and last name should be strings and are required in the database with username to be unique and index. **finished
@@ -10,7 +10,7 @@
 - should return only success true when an account has been created **finished
  */
 
-const bcrypt = require('bcrypt'); //encrypts password
+const bcrypt = require('bcrypt');
 const { User } = require('../../db');
 const { definitions } = require('../../definitions');
 const { SuccessResponse, PostUserRequest } = definitions
@@ -28,42 +28,42 @@ exports.create = app => {
             summary: 'Create one user',
             body: PostUserRequest,
             response: {
-                200: SuccessResponse //using response we can filter out what we want to show on our response
+                200: SuccessResponse
             }
         },
 
         /**
-         * handles the request for a given route
+         * Create a user
          * 
          * @param {import('fastify').FastifyRequest} request
          * @param {import('fastify').FastifyReply<Response>} response
          */
         handler: async (request, response) => {
             const { body } = request;
-            const { username, password, firstName, lastName, isAdmin = false } = body;
+            const { username, password, firstName, lastName, isAdmin = false } = body; //get these properties from body
 
-            if(!username || !password || !firstName || !lastName){
+            if(!username || !password || !firstName || !lastName){ //if there's no payload of any property
                 return response
                     .badRequest('request/malformed');
             }
 
-            const passwordRegex = /^([A-Z]|[a-z]| ){12,}$/;
+            const passwordRegex = /^([A-Z]|[a-z]| ){12,}$/; //regex for the password
 
-            if(passwordRegex.test(password) == false){
+            if(passwordRegex.test(password) == false){ //check the string if it fits the regex
                 return response
                     .badRequest('user/bad-request');
             }
 
-            const hash = await bcrypt.hash(password, saltRounds);
+            const hash = await bcrypt.hash(password, saltRounds); //encrypt the password
 
-            const user = await User.findOne({ username }).exec();
+            const user = await User.findOne({ username }).exec(); //check if the username is already in the database
         
-            if(user){ //handling error if there's a user with that username
+            if(user){ //error handler if there's already a user with that username
                 return response
                     .forbidden('user/forbidden');
             }
 
-            const data = new User ({
+            const data = new User ({ //create a new user wit the given properties
                 username,
                 firstName,
                 lastName,
@@ -71,15 +71,11 @@ exports.create = app => {
                 password: hash
             });
 
-            await data.save();
+            await data.save(); //save the data
 
-            return {
+            return { //return success
                 success: true
             }
         }
-    
-
     })
 };
-
-//10:50 at crud create part 1

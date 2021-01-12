@@ -1,4 +1,4 @@
-/**
+/** Exercise Specifications
  * Task Module (GET get one task)
  * - can only be done by owner of the task or the admin of the task **finished
 - the object returned should have the username, text, isDone, dateUpdated, and dateCreated **finished
@@ -14,7 +14,7 @@ const { GetOneTodoParams, GetOneTodoResponse } = definitions
  * 
  * @param {*} app 
  */
-exports.get = app => { //arrow function which allows modification of global variables,
+exports.get = app => {
     
     app.get('/todo/:id', {
         schema: {
@@ -41,28 +41,28 @@ exports.get = app => { //arrow function which allows modification of global vari
          * @param {import('fastify').FastifyRequest} request
          * @param {import('fastify').FastifyReply<Response>} response
          */
-        handler: async(request, response) => { //since we aren't using responses?? might need to consult what this means, request allows pagination, get method will not read the payload so we use query params
-            const { params, user } = request; //use url to get info
-            const { username, isAdmin } = user;
-            const { id } = params;
+        handler: async(request, response) => {
+            const { params, user } = request;
+            const { username, isAdmin } = user; //get username and isAdmin property from user
+            const { id } = params; //gets id from params
             
-            var data = await Todo.findOne({ id, username }).exec();
+            var data = await Todo.findOne({ id, username }).exec(); //get data
 
             if(isAdmin == true){ //if admin
-                data = await Todo.findOne({ id }).exec();
+                data = await Todo.findOne({ id }).exec(); //get id regardless of username
             } else {
-                data = await Todo.findOne({ id, username }).exec();
+                data = await Todo.findOne({ id, username }).exec(); //get id with regards to username
             } 
 
-            if (!data){
+            if (!data){ //if there's no todo
                 return response
                     .notFound('todo/not-found')
             } 
 
-            return {
+            return { //returns success and data
                 success: true,
                 data
             };
         }
     }); 
-}; // dont forget semi-colon
+};
