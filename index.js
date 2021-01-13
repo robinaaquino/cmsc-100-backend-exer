@@ -9,7 +9,10 @@ const { build } = require('./app');
 */
 async function start() {
     //calls to build an app
-    const app = await build();
+    const app = await build({
+        logger: true,
+        trustProxy: true
+    });
 
     //get port from environment variable
     //export PORT = 8000 & node index.js
