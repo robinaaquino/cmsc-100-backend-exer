@@ -68,9 +68,9 @@ describe('For the route for updating one user PUT: (/todo/:user)', () => {
     const { statusCode } = response;
     const { ownerUser } = payload;
 
-    console.log(ownerUser);
-    console.log(statusCode);
-    console.log(payload);
+    // console.log(ownerUser);
+    // console.log(statusCode);
+    // console.log(payload);
     const { username, firstName, lastName } = ownerUser;
 
     statusCode.should.equal(200);
@@ -79,9 +79,9 @@ describe('For the route for updating one user PUT: (/todo/:user)', () => {
       .findOne({ username })
       .exec();
 
-    console.log("\npartners");
-    console.log(ownerUser);
-    console.log(user);
+    // console.log("\npartners");
+    // console.log(ownerUser);
+    // console.log(user);
 
     username.should.equal(user.username);
     firstName.should.equal(user.firstName);
@@ -112,9 +112,9 @@ describe('For the route for updating one user PUT: (/todo/:user)', () => {
       .findOne({ username })
       .exec();
 
-    console.log("\npartners");
-    console.log(ownerUser);
-    console.log(user);
+    // console.log("\npartners");
+    // console.log(ownerUser);
+    // console.log(user);
 
     username.should.equal(user.username);
     firstName.should.equal(user.firstName);
@@ -145,9 +145,9 @@ describe('For the route for updating one user PUT: (/todo/:user)', () => {
       .findOne({ username })
       .exec();
 
-    console.log("\npartners");
-    console.log(ownerUser);
-    console.log(user);
+    // console.log("\npartners");
+    // console.log(ownerUser);
+    // console.log(user);
 
     username.should.equal(user.username);
     firstName.should.equal(user.firstName);

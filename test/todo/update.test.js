@@ -90,8 +90,8 @@ describe('For the route for updating one todo PUT: (/todo/:id)', () => {
     const data = await Todo.findOne({ id: idFilter }).exec();
     const { text, id, isDone } = data;
 
-    console.log(data);
-    console.log(payload);
+    // console.log(data);
+    // console.log(payload);
 
     success.should.equal(true);
     statusCode.should.equal(200);
@@ -126,8 +126,8 @@ describe('For the route for updating one todo PUT: (/todo/:id)', () => {
     const data = await Todo.findOne({ id: idFilter }).exec();
     const { text, id, isDone } = data;
 
-    console.log(data);
-    console.log(payload);
+    // console.log(data);
+    // console.log(payload);
 
     success.should.equal(true);
     statusCode.should.equal(200);
@@ -165,8 +165,8 @@ describe('For the route for updating one todo PUT: (/todo/:id)', () => {
     const data = await Todo.findOne({ id: idFilter });
     const { text, id, isDone } = data;
 
-    console.log(data);
-    console.log(payload);
+    // console.log(data);
+    // console.log(payload);
 
     success.should.equal(true);
     statusCode.should.equal(200);
