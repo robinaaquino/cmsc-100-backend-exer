@@ -48,7 +48,7 @@ exports.deleteOne = app => {
 
             if (!data){ //error handling if a user with the specified userId wasn't found
                 return response
-                    .notFound('user/not-found');
+                    .badRequest('user/bad-request/delete');
             }
 
             if (isAdmin == true || data.username === username){ //if user is an admin or the data username matchs the username of the user
@@ -58,9 +58,8 @@ exports.deleteOne = app => {
                     .unauthorized('user/unauthorized');
             }
          
-            return { //return success and data
-                success: true,
-                data
+            return { //return success
+                success: true
             }
         }
     });
