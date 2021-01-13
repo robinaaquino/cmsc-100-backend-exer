@@ -3,20 +3,16 @@ const { build } = require('../../app');
 const should = require('should');
 require('tap').mochaGlobals();
 
-
 describe('For the route for creating a user POST: (/user)', () => {
     let app;
     const usernames = [];
 
-
-    before(async() => {
-        //initialize backend application
+    before(async () => {
         app = await build();
-    })
+    });
 
     after(async () => {
-        //clean up the database
-        for (const username of usernames){
+        for(const username of usernames){
             await User.findOneAndDelete({ username });
         }
 
@@ -24,26 +20,30 @@ describe('For the route for creating a user POST: (/user)', () => {
     });
 
     //happy path
-    it('it should return { success: true, data: (new user object)} and has a status code of 200 when called using POST', async () => {
+    it('it should return { success: true } and has a status code of 200 when called using POST', async () => {
         const response = await app.inject({
             method: 'POST',
             url: '/user',
             payload: {
                 username: 'user01',
-                password: 'password1234567890'
+                firstName: 'test',
+                lastName: 'test',
+                password: 'passwordpassword'
             }
         });
 
+        const data = await User.findOne().sort({ dateCreated: -1 }).limit(1).exec(); //finding the most recent addition to User database
+        const { username } = data;
+
         const payload = response.json();
         const { statusCode } = response;
-        const { success, data } = payload;
-        const { username } = data;
+        const { success } = payload;
 
         success.should.equal(true);
         statusCode.should.equal(200);
         username.should.equal('user01');
 
-        const { 
+        const {
             username: usernameDatabase
         } = await User
             .findOne({ username })
@@ -51,66 +51,25 @@ describe('For the route for creating a user POST: (/user)', () => {
 
         username.should.equal(usernameDatabase);
 
-        //add the id in the ids array for cleaning
         usernames.push(username);
-
-    });
+    })
 
     //non-happy path
-    it ('should return {success: false, message: error message)} and has a status code of 400 when called using POST and there is no username', async () => {
+    it('it should return { success: false, message: error message } and has a status code of 400 when called using POST and there is no username', async() => {
         const response = await app.inject({
             method: 'POST',
             url: '/user',
             payload: {
-                password: 'password1234567890'
+                password: 'passwordpassword'
             }
-        });
+        })
 
         const payload = response.json();
         const { statusCode } = response;
         const { success, message } = payload;
 
+        success.should.equal(false);
         statusCode.should.equal(400);
-        // success.should.equal(false);
         should.exist(message);
     })
-
-    //non-happy path
-    it ('should return {success: false, message: error message)} and has a status code of 400 when called using POST and there is no password', async () => {
-        const response = await app.inject({
-            method: 'POST',
-            url: '/user',
-            payload: {
-                username: 'user02'
-            }
-        });
-
-        const payload = response.json();
-        const { statusCode } = response;
-        const { success, message } = payload;
-
-        statusCode.should.equal(400);
-        // success.should.equal(false);
-        should.exist(message);
-    })
-
-    //another non-happy path
-    it ('should return {success: false, message: error message)} and has a status code of 400 when called using POST and there is no payload', async () => {
-        const response = await app.inject({
-            method: 'POST',
-            url: '/user'
-        });
-
-        const payload = response.json();
-
-        console.log(payload);
-        console.log(response.statusCode);
-
-        const { statusCode } = response;
-        const { success, message } = payload;
-
-        statusCode.should.equal(400);
-        // success.should.equal(false);
-        should.exist(message);
-    })
-});
+})
