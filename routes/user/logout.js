@@ -42,11 +42,21 @@ exports.logout = app => {
          * @param {import('fastify').FastifyReply<Response>} response
          */
         handler: async (request, response) => {
-            const { user, query } = request; 
+            const { user, query, session, headers } = request; 
             const { username } = user; //gets username from user
             const { tokenQuery } = query; //gets tokenQuery from query
+            const { token: cookieToken } = session;
+            const { authorization } = headers;
 
-            if(tokenQuery != request.session.token || !tokenQuery){ //error handling if there's no tokenQuery or if tokenQuery is not equal to the session token
+            let authorizationToken; //sets a variable
+
+            if(authorization){ //if there's authorization, split the array
+                [,authorizationToken] = authorization.split('Bearer ');
+            }
+
+            const token = cookieToken || authorizationToken //set token as either cookieToken or authorization Token
+
+            if(tokenQuery != token || !tokenQuery){ //error handling if there's no tokenQuery or if tokenQuery is not equal to the session token
                 return response
                     .unauthorized('user/unauthorized')
             }
