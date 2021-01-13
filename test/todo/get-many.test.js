@@ -81,8 +81,6 @@ describe('For the route for getting many todos GET: (/todo)', () => {
     const { statusCode } = response;
     const { success, data } = payload;
 
-    console.log(payload);
-
     success.should.equal(true);
     statusCode.should.equal(200);
     data.length.should.equal(10);
@@ -90,11 +88,6 @@ describe('For the route for getting many todos GET: (/todo)', () => {
     for (let i = 0; i < 1; i++) {
         const { text, isDone } = data[i];
         const { id } = ids[i]
-
-    //   console.log(todo);
-    //   console.log(text);
-    //   console.log(data[i]);
-    //   console.log(ids[i]);
 
         const todo = await Todo
             .findOne({ id })

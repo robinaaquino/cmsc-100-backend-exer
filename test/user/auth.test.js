@@ -65,8 +65,6 @@ describe('For the route for authenticating a user: (/auth', () => {
         const payload = response.json();
         const { statusCode } = response;
         const { success } = payload;
-        
-        console.log(payload);
 
         success.should.equal(true);
         statusCode.should.equal(200);

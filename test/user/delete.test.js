@@ -67,8 +67,6 @@ describe('For the route for deleting one todo DELETE: (/todo/:id', () => {
         const payload = response.json();
         const { statusCode } = response;
         const { success } = payload;
-
-        console.log(payload);
         
         success.should.equal(true);
         statusCode.should.equal(200);

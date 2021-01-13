@@ -84,8 +84,6 @@ describe('For the route for getting many users GET: (/user)', () => {
     const { statusCode } = response;
     const { success, data } = payload;
 
-    console.log(payload);
-
     success.should.equal(true);
     statusCode.should.equal(200);
     data.length.should.equal(10);
@@ -113,8 +111,6 @@ describe('For the route for getting many users GET: (/user)', () => {
     const payload = response.json();
     const { statusCode } = response;
     const { success, data } = payload;
-
-    console.log(payload);
 
     success.should.equal(true);
     statusCode.should.equal(200);
