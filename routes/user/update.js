@@ -100,11 +100,11 @@ exports.update = app => {
 
                 const adminUser = await User.findOneAndUpdate( //update the user info
                     { username: userId },
-                    update
-                )
+                    update,
+                    { new: true }
+                ).exec();
                 
-                return { //return success and adminUser info
-                    success: true,
+                return { //return adminUser info
                     adminUser
                 }
             } else { //if not admin
@@ -142,11 +142,11 @@ exports.update = app => {
 
                 const ownerUser = await User.findOneAndUpdate(
                     { username: userId },
-                    update
-                ) //update the user info
+                    update,
+                    { new: true }
+                ).exec(); //update the user info
 
-                return { //return success and ownerUser info
-                    success: true,
+                return { //return ownerUser info
                     ownerUser
                 }
             }
