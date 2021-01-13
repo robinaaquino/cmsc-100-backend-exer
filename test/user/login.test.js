@@ -3,7 +3,7 @@ const { build } = require('../../app');
 const should = require('should');
 require('tap').mochaGlobals();
 
-describe('For the route for creating a user POST: (/user', () => {
+describe('For the route for logging in a user POST: (/user', () => {
     let app;
     const usernames = [];
     
