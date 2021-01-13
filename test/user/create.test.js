@@ -38,7 +38,6 @@ describe('For the route for creating a user POST: (/user)', () => {
         const payload = response.json();
         const { statusCode } = response;
         const { success } = payload;
-
         success.should.equal(true);
         statusCode.should.equal(200);
         username.should.equal('user01');
