@@ -15,6 +15,7 @@ exports.errorHandler = (error, request, response) => {
         'user/unauthorized': 'You are not authorized to use this path',
         'user/not-found': 'User cannot be found using the given username',
         'user/username-not-found': 'User cannot be found using the givern username',
+        'user/bad-request/delete': 'User ID not in the database',
         'user/forbidden': 'You are not allowed to do this',
         'user/forbidden/get-many': 'Only choose one sort',
         'user/bad-request': 'Password should not contain numbers and special characters, and must be longer than 12 characters',
