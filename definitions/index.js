@@ -356,7 +356,7 @@ const UpdateOneUserResponse = {
 const GetOneUserResponse = {
     type: 'object',
     description: 'Returns a user',
-    required: ['success', 'data'],
+    required: ['success'],
     properties: {
         success: SuccessData,
         data: UserFullData
